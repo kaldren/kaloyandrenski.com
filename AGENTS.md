@@ -1,0 +1,51 @@
+# Agent Instructions
+
+Instructions for AI agents working in this repo. This is the single source of truth for goals, tech stack, and rules — there is no separate constitution or tech-stack file.
+
+## Goals
+
+kaloyandrenski.com is a personal website that serves as a professional portfolio for Kaloyan Drenski - an AI Solution Architect specializing in agentic AI, multi-agent systems, and enterprise AI architecture and transformation. It highlights his expertise in software development, certifications, and technical writing.
+
+The goal is to build a minimal, fast, and content-focused website that showcases his professional profile, expertise, certifications, and technical writing.
+
+The website is a single-page experience, with dedicated pages only for blog posts.
+
+## Tech Stack
+
+### Frontend
+
+- Plain HTML5, CSS3, and vanilla JavaScript (ES modules where needed).
+- No frameworks or libraries (no React, Vue, etc.).
+- No CSS preprocessors (no Sass/Less) — plain CSS only.
+
+### Tooling & build process
+
+- None. No `package.json`, no npm/Node dependency, no bundler, no build step.
+- Files are authored directly and served as-is.
+- Local preview: open the HTML files directly in a browser, or use any simple static file server.
+
+### Hosting & deployment
+
+- **GitHub Pages**, serving directly from this repository.
+- Custom domain `kaloyandrenski.com` configured via a `CNAME` file.
+
+### Rationale
+
+This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS stack with no build tooling keeps the project simple to maintain, avoids dependency upkeep, and matches the small scope of a personal portfolio site.
+
+### Open questions
+
+- **Blog post authoring**: not yet decided how individual blog post pages will be authored (e.g. hand-written HTML per post vs. some lightweight templating). To be addressed in a future spec.
+
+## Rules
+
+- **Specs-first**: no implementation without a corresponding spec. Specifications are written before implementation.
+- **One spec per feature**: each feature gets a single markdown file in `specs/`, following the format in `specs/TEMPLATE.md`.
+- **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
+
+## Workflow for agents
+
+1. Before implementing a feature, check `specs/` for an existing spec covering it.
+2. If no spec exists, write one first using `specs/TEMPLATE.md` as the starting point.
+3. Consult the Rules and Tech Stack sections above before making implementation decisions.
+4. Implement only what the spec describes — keep scope matched to the spec.
