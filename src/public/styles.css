@@ -403,53 +403,6 @@ a:hover {
 }
 
 /* ==========================================================================
-   Outside work
-   ========================================================================== */
-
-.outside-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
-}
-
-@media (min-width: 640px) {
-  .outside-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .outside-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.outside-card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-
-.outside-card__placeholder {
-  aspect-ratio: 4 / 3;
-  background-color: var(--color-bg-subtle);
-}
-
-.outside-card figcaption {
-  padding: var(--space-4);
-}
-
-.outside-card h3 {
-  font-size: var(--text-lg);
-  margin-bottom: var(--space-2);
-}
-
-.outside-card p {
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-
-/* ==========================================================================
    Footer / contact
    ========================================================================== */
 
