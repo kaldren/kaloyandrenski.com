@@ -25,9 +25,15 @@ Either way, no code is implemented without a spec in `specs/` (see `AGENTS.md`).
 
 ```text
 kaloyandrenski.com/
-├── src/                # Website source code
-├── specs/              # Feature specifications
-│   └── TEMPLATE.md     # Spec format for new features
-├── AGENTS.md           # Goals, tech stack, and rules for AI agents
+├── .claude/             # Claude Code configuration for this repo
+│   ├── agents/          # Agent definitions (spec-writer, frontend-developer)
+│   └── skills/          # Skill definitions (build-feature)
+├── src/                 # Website source code
+│   ├── index.html       # Single-page site entry point
+│   └── public/          # Static assets served as-is (images, styles.css, etc.)
+├── specs/               # Feature specifications (one file per feature)
+│   └── TEMPLATE.md      # Spec format for new features
+├── AGENTS.md            # Goals, tech stack, and rules for AI agents
+├── DESIGN_SYSTEM.md     # Source of truth for colors, type, spacing, shape
 └── README.md
 ```

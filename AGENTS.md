@@ -10,6 +10,23 @@ The goal is to build a minimal, fast, and content-focused website that showcases
 
 The website is a single-page experience, with dedicated pages only for blog posts.
 
+## Project Structure
+
+```text
+kaloyandrenski.com/
+├── .claude/             # Claude Code configuration for this repo
+│   ├── agents/          # Agent definitions (spec-writer, frontend-developer)
+│   └── skills/          # Skill definitions (build-feature)
+├── src/                 # Website source code
+│   ├── index.html       # Single-page site entry point
+│   └── public/          # Static assets served as-is (images, styles.css, etc.)
+├── specs/               # Feature specifications (one file per feature)
+│   └── TEMPLATE.md      # Spec format for new features
+├── AGENTS.md            # This file
+├── DESIGN_SYSTEM.md     # Source of truth for colors, type, spacing, shape
+└── README.md
+```
+
 ## Tech Stack
 
 ### Frontend
