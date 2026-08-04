@@ -33,6 +33,10 @@ The website is a single-page experience, with dedicated pages only for blog post
 
 This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS stack with no build tooling keeps the project simple to maintain, avoids dependency upkeep, and matches the small scope of a personal portfolio site.
 
+## Design System
+
+`DESIGN_SYSTEM.md` is the single source of truth for colors, typography, spacing, shape, and interaction states. Any frontend implementation must follow it strictly — no hardcoded colors/fonts/spacing outside its tokens.
+
 ## Rules
 
 - **Specs-first**: no implementation without a corresponding spec. Specifications are written before implementation.
