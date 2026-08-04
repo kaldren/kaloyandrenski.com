@@ -16,7 +16,7 @@ The website is a single-page experience, with dedicated pages only for blog post
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
 │   ├── agents/          # Agent definitions (spec-writer, frontend-developer)
-│   └── skills/          # Skill definitions (build-feature)
+│   └── skills/          # Skill definitions (build-feature, build-spec)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
@@ -66,7 +66,9 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 Two equivalent ways to deliver a feature:
 
 - **Manual**: delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), then implementation to the frontend-developer agent (`.claude/agents/frontend-developer.md`).
-- **`build-feature` skill** (`.claude/skills/build-feature.md`): runs the same pipeline end to end — classification, spec-writer, implementation brief, frontend-developer, and browser verification.
+- **`build-feature` skill** (`.claude/skills/build-feature/SKILL.md`): runs the same pipeline end to end — classification, spec-writer, implementation brief, frontend-developer, and browser verification.
+
+To just start or iterate on a spec without building yet, use the **`build-spec` skill** (`.claude/skills/build-spec/SKILL.md`) — an interactive front end to `spec-writer` that stops once the spec is finalized.
 
 Manual steps, if not using the skill:
 
