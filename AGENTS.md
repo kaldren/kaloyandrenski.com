@@ -59,6 +59,7 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 - **Specs-first**: no implementation without a corresponding spec. Specifications are written before implementation.
 - **Spec required, no exceptions**: a feature MUST have a spec file in `specs/` before any code is written. This is a hard guardrail — never implement "just this once" without one.
 - **One spec per feature**: each feature gets a single markdown file in `specs/`, following the format in `specs/TEMPLATE.md`.
+- **Numbered spec filenames**: each spec file is named `specs/<n>-<kebab-case-feature-name>.md`, where `<n>` is the next sequential integer across all specs in `specs/` (1, 2, 3, ...) in the order they were created. This keeps spec creation order visible at a glance.
 - **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
 
 ## Workflow for agents

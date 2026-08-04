@@ -19,7 +19,7 @@ If the inputs are too thin to write meaningful requirements or acceptance criter
 
 1. Check `specs/` first — if a spec for this feature already exists, update it rather than creating a duplicate.
 2. Copy the structure of `specs/TEMPLATE.md` exactly: `# Feature: <name>`, `## What / Why`, `## Requirements`, `## Acceptance criteria`. Don't add or remove sections.
-3. Name the file `specs/<kebab-case-feature-name>.md`.
+3. Name the file `specs/<n>-<kebab-case-feature-name>.md`, where `<n>` is the next sequential integer across all specs already in `specs/` (check existing filenames — don't reuse or skip numbers). When updating an existing spec, keep its current filename as-is; only new specs get a new number.
 4. **What / Why**: one short paragraph — what the feature is and the concrete reason it's needed. No implementation detail here.
 5. **Requirements**: a flat bullet list of what the feature must do, stated as outcomes, not implementation steps. Keep it scoped to this one feature — don't fold in unrelated improvements.
 6. **Acceptance criteria**: a checklist of concrete, verifiable conditions (`- [ ] ...`) that determine when the feature is done. Each criterion should be testable by looking at the running site, not by reading code.
