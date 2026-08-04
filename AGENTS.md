@@ -15,7 +15,7 @@ The website is a single-page experience, with dedicated pages only for blog post
 ```text
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
-│   ├── agents/          # Agent definitions (spec-writer, frontend-developer)
+│   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops)
 │   └── skills/          # Skill definitions (build-feature, build-spec)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
@@ -64,10 +64,17 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 
 ## Workflow for agents
 
+There are two implementer agents, split by domain:
+
+- **`frontend-developer`** (`.claude/agents/frontend-developer.md`) — site content, markup, styling, and client-side behavior under `src/`, governed by `DESIGN_SYSTEM.md`.
+- **`devops`** (`.claude/agents/devops.md`) — CI/CD, GitHub Actions workflows, GitHub Pages publishing configuration, and repo-root deployment files (e.g. `CNAME`). Never touches `src/`.
+
+Route each request to the implementer matching its domain. A request that spans both should be split into separate spec/implement passes, one per domain.
+
 Two equivalent ways to deliver a feature:
 
-- **Manual**: delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), then implementation to the frontend-developer agent (`.claude/agents/frontend-developer.md`).
-- **`build-feature` skill** (`.claude/skills/build-feature/SKILL.md`): runs the same pipeline end to end — classification, spec-writer, implementation brief, frontend-developer, and browser verification.
+- **Manual**: delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), then implementation to whichever implementer agent matches the request's domain.
+- **`build-feature` skill** (`.claude/skills/build-feature/SKILL.md`): runs the same pipeline end to end — domain + weight classification, spec-writer, a domain-specific implementation brief, the matching implementer agent, and verification.
 
 To just start or iterate on a spec without building yet, use the **`build-spec` skill** (`.claude/skills/build-spec/SKILL.md`) — an interactive front end to `spec-writer` that stops once the spec is finalized.
 
@@ -77,4 +84,4 @@ Manual steps, if not using the skill:
 2. If no spec exists, stop and delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), passing along the feature request and any other inputs/context gathered so far. Do not implement without a spec.
 3. Once the spec-writer agent produces the spec, review it against the Rules and Tech Stack sections above before proceeding.
 4. Consult the Rules and Tech Stack sections above before making implementation decisions.
-5. Implement only what the spec describes — keep scope matched to the spec.
+5. Decide the domain (frontend vs. devops/infra) and delegate implementation to the matching agent above. Implement only what the spec describes — keep scope matched to the spec.
