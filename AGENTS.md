@@ -33,19 +33,17 @@ The website is a single-page experience, with dedicated pages only for blog post
 
 This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS stack with no build tooling keeps the project simple to maintain, avoids dependency upkeep, and matches the small scope of a personal portfolio site.
 
-### Open questions
-
-- **Blog post authoring**: not yet decided how individual blog post pages will be authored (e.g. hand-written HTML per post vs. some lightweight templating). To be addressed in a future spec.
-
 ## Rules
 
 - **Specs-first**: no implementation without a corresponding spec. Specifications are written before implementation.
+- **Spec required, no exceptions**: a feature MUST have a spec file in `specs/` before any code is written. This is a hard guardrail — never implement "just this once" without one.
 - **One spec per feature**: each feature gets a single markdown file in `specs/`, following the format in `specs/TEMPLATE.md`.
 - **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
 
 ## Workflow for agents
 
 1. Before implementing a feature, check `specs/` for an existing spec covering it.
-2. If no spec exists, write one first using `specs/TEMPLATE.md` as the starting point.
-3. Consult the Rules and Tech Stack sections above before making implementation decisions.
-4. Implement only what the spec describes — keep scope matched to the spec.
+2. If no spec exists, stop and delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), passing along the feature request and any other inputs/context gathered so far. Do not implement without a spec.
+3. Once the spec-writer agent produces the spec, review it against the Rules and Tech Stack sections above before proceeding.
+4. Consult the Rules and Tech Stack sections above before making implementation decisions.
+5. Implement only what the spec describes — keep scope matched to the spec.

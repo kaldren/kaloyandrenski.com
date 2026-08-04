@@ -9,10 +9,6 @@ What this feature is and why it's needed.
 - Requirement 1
 - Requirement 2
 
-## Out of scope
-
-What this feature explicitly does not cover.
-
 ## Acceptance criteria
 
 - [ ] Criterion 1
