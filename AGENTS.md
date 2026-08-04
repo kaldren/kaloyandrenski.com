@@ -46,6 +46,13 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 
 ## Workflow for agents
 
+Two equivalent ways to deliver a feature:
+
+- **Manual**: delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), then implementation to the frontend-developer agent (`.claude/agents/frontend-developer.md`).
+- **`build-feature` skill** (`.claude/skills/build-feature.md`): runs the same pipeline end to end — classification, spec-writer, implementation brief, frontend-developer, and browser verification.
+
+Manual steps, if not using the skill:
+
 1. Before implementing a feature, check `specs/` for an existing spec covering it.
 2. If no spec exists, stop and delegate spec creation to the spec-writer agent (`.claude/agents/spec-writer.md`), passing along the feature request and any other inputs/context gathered so far. Do not implement without a spec.
 3. Once the spec-writer agent produces the spec, review it against the Rules and Tech Stack sections above before proceeding.

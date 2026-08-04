@@ -10,6 +10,17 @@ This project follows a **Specs-First Development** approach, where specification
 
 ---
 
+## Building a Feature
+
+There are two ways to build a feature or change on this site:
+
+1. **Manual**: ask the `spec-writer` agent to write a spec in `specs/`, then ask the `frontend-developer` agent to implement it against that spec.
+2. **`build-feature` skill**: run `/build-feature <description>` to drive the whole pipeline in one go — it classifies the request, delegates to `spec-writer` when a spec is needed, builds an implementation brief, hands off to `frontend-developer`, and verifies the result in a browser.
+
+Either way, no code is implemented without a spec in `specs/` (see `AGENTS.md`).
+
+---
+
 ## Project Structure
 
 ```text
