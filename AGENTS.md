@@ -16,7 +16,7 @@ The website is a single-page experience, with dedicated pages only for blog post
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
 │   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops)
-│   └── skills/          # Skill definitions (build-feature, build-spec)
+│   └── skills/          # Skill definitions (build-feature, build-spec, update-changelog)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
@@ -62,7 +62,7 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 - **One spec per feature**: each feature gets a single markdown file in `specs/`, following the format in `specs/TEMPLATE.md`.
 - **Numbered spec filenames**: each spec file is named `specs/<n>-<kebab-case-feature-name>.md`, where `<n>` is the next sequential integer across all specs in `specs/` (1, 2, 3, ...) in the order they were created. This keeps spec creation order visible at a glance.
 - **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
-- **Changelog required**: every feature implementation (not trivial tweaks) gets an entry in `CHANGELOG.md`, added as part of delivering the feature — see the Workflow section below.
+- **Changelog required**: every feature implementation (not trivial tweaks) gets an entry in `CHANGELOG.md`, written via the `update-changelog` skill (`.claude/skills/update-changelog/SKILL.md`) — see the Workflow section below.
 
 ## Workflow for agents
 
@@ -79,6 +79,8 @@ Two equivalent ways to deliver a feature:
 - **`build-feature` skill** (`.claude/skills/build-feature/SKILL.md`): runs the same pipeline end to end — domain + weight classification, spec-writer, a domain-specific implementation brief, the matching implementer agent, and verification.
 
 To just start or iterate on a spec without building yet, use the **`build-spec` skill** (`.claude/skills/build-spec/SKILL.md`) — an interactive front end to `spec-writer` that stops once the spec is finalized.
+
+To add or fix a changelog entry outside the full pipeline (a manual change, a retroactive entry), use the **`update-changelog` skill** (`.claude/skills/update-changelog/SKILL.md`) directly — `build-feature` also calls it internally at delivery time.
 
 Manual steps, if not using the skill:
 

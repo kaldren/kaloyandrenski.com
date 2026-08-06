@@ -84,7 +84,7 @@ If the request was split across both domains in step 1, run this step (and step 
 
 **Feature-weight requests only** — trivial tweaks don't get a changelog entry.
 
-Add an entry to `CHANGELOG.md` under today's date (create a new `## YYYY-MM-DD` section at the top of the file if one doesn't already exist for today; otherwise add to it). Categorize as **Added**, **Changed**, or **Removed**, matching Keep a Changelog style already used in the file. Write one or two sentences describing the feature from a user-facing/product angle (not implementation detail), and link to its spec file if one exists: `([spec](specs/<n>-<name>.md))`.
+Invoke the `update-changelog` skill (Skill tool), passing the feature description, its category (**Added**, **Changed**, or **Removed**), and the spec file path if one exists. It handles finding or creating today's date section and formatting the entry.
 
 ## 7. Report
 
