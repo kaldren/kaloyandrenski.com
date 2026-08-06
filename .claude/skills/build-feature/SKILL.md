@@ -80,12 +80,18 @@ If the request was split across both domains in step 1, run this step (and step 
 - Walk through each acceptance criterion from the spec (or the original request, for trivial changes) against what was actually implemented (trigger conditions, permissions, publish steps, domain handling).
 - A live deploy can't be verified from this environment — note explicitly which criteria only become verifiable after an actual push to `main` (e.g. a successful Actions run, the live site reflecting the change, the custom domain still resolving), and any manual repo-settings step the user still needs to complete.
 
-## 6. Report
+## 6. Update the changelog
+
+**Feature-weight requests only** — trivial tweaks don't get a changelog entry.
+
+Add an entry to `CHANGELOG.md` under today's date (create a new `## YYYY-MM-DD` section at the top of the file if one doesn't already exist for today; otherwise add to it). Categorize as **Added**, **Changed**, or **Removed**, matching Keep a Changelog style already used in the file. Write one or two sentences describing the feature from a user-facing/product angle (not implementation detail), and link to its spec file if one exists: `([spec](specs/<n>-<name>.md))`.
+
+## 7. Report
 
 Summarize for the user:
 - Classification (domain, and trivial/feature) and why.
 - The spec used, if any.
 - Key points from the implementation brief.
-- Files created/changed.
+- Files created/changed, including the `CHANGELOG.md` entry if one was added.
 - Verification outcome per acceptance criterion.
 - Anything flagged or left unresolved (design-system conflicts, unverifiable deploy criteria, manual repo-settings steps still needed, scope the implementer couldn't fully satisfy).

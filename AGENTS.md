@@ -23,6 +23,7 @@ kaloyandrenski.com/
 ├── specs/               # Feature specifications (one file per feature)
 │   └── TEMPLATE.md      # Spec format for new features
 ├── AGENTS.md            # This file
+├── CHANGELOG.md         # Record of notable feature additions/changes
 ├── DESIGN_SYSTEM.md     # Source of truth for colors, type, spacing, shape
 └── README.md
 ```
@@ -61,6 +62,7 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 - **One spec per feature**: each feature gets a single markdown file in `specs/`, following the format in `specs/TEMPLATE.md`.
 - **Numbered spec filenames**: each spec file is named `specs/<n>-<kebab-case-feature-name>.md`, where `<n>` is the next sequential integer across all specs in `specs/` (1, 2, 3, ...) in the order they were created. This keeps spec creation order visible at a glance.
 - **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
+- **Changelog required**: every feature implementation (not trivial tweaks) gets an entry in `CHANGELOG.md`, added as part of delivering the feature — see the Workflow section below.
 
 ## Workflow for agents
 
