@@ -2,6 +2,11 @@
 
 All notable changes to kaloyandrenski.com are documented in this file. Entries are grouped by date, newest first, and cover feature-level additions and changes — not every commit.
 
+## 2026-08-27
+
+### Added
+- **Agentic AI Business Solutions Architect certification** — added the new Microsoft Certified: Agentic AI Business Solutions Architect credential to the Certifications section, earned August 27, 2026 and expiring August 27, 2027.
+
 ## 2026-08-04
 
 ### Added
