@@ -1,0 +1,23 @@
+{
+  "name": "kaloyandrenski.com",
+  "version": "1.0.0",
+  "description": "kaloyandrenski.com is a personal website that serves as a professional portfolio for Kaloyan Drenski - an AI Solution Architect specializing in agentic AI, multi-agent systems, and enterprise AI architecture and transformation. It highlights his expertise in software development, certifications, and technical writing.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaldren/kaloyandrenski.com.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/kaldren/kaloyandrenski.com/issues"
+  },
+  "homepage": "https://github.com/kaldren/kaloyandrenski.com#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.20.2"
+  }
+}
