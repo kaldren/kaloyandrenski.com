@@ -71,12 +71,12 @@ If the request was split across both domains in step 1, run this step (and step 
 ## 5. Verify
 
 **Frontend**, after `frontend-developer` reports back:
-- Serve the site locally with a simple static file server (no build step exists for this site per `AGENTS.md`).
-- Use the Chrome browser tool to open the changed page(s).
-- Walk through each acceptance criterion from the spec (or the original request, for trivial changes) and confirm it visually.
-- If something can't be verified this way (e.g. it depends on a specific device/viewport, or on content you can't see in a static preview), say so explicitly rather than claiming full verification.
+- Invoke the `ui-qa` agent for every rendered-site change. Pass the spec path and the full implementation brief from step 3; for a trivial request, pass the original request as the working acceptance criteria and brief. Include the affected page or feature scope.
+- The `ui-qa` agent serves `src/` locally and performs the Playwright MCP browser checks. Do not duplicate those checks with a separate browser-verification sequence.
+- Treat its report as a completion gate. If it reports **FAILED**, return the findings to `frontend-developer` for a scoped fix, then invoke `ui-qa` again. If it reports **BLOCKED**, report the blocker and do not claim browser verification or feature completion until it is resolved. Only an overall **PASSED** UI-QA result permits the rendered-site feature to proceed as complete. Preserve **NOT APPLICABLE** results and their reasons in the verification summary.
 
 **DevOps/infra**, after `devops` reports back:
+- Do not run browser QA for infrastructure-only changes.
 - Walk through each acceptance criterion from the spec (or the original request, for trivial changes) against what was actually implemented (trigger conditions, permissions, publish steps, domain handling).
 - A live deploy can't be verified from this environment — note explicitly which criteria only become verifiable after an actual push to `main` (e.g. a successful Actions run, the live site reflecting the change, the custom domain still resolving), and any manual repo-settings step the user still needs to complete.
 
