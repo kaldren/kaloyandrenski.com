@@ -64,6 +64,19 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 - **Simplicity**: no frameworks, no build step, no unnecessary dependencies. Keep it plain HTML/CSS/JS per the tech stack above.
 - **Changelog required**: every feature implementation (not trivial tweaks) gets an entry in `CHANGELOG.md`, written via the `update-changelog` skill (`.claude/skills/update-changelog/SKILL.md`) — see the Workflow section below.
 
+## Local UI QA
+
+The repository configures the identical loopback-only Playwright MCP server for three clients: `.vscode/mcp.json` (VS Code/Copilot), `.mcp.json` (Claude Code), and `.codex/config.toml` (trusted Codex projects). It runs `npx -y @playwright/mcp@latest --headless --isolated --allowed-hosts localhost,127.0.0.1,[::1]`. This is local development tooling, not a website dependency or build step.
+
+For Claude Code, use `/ui-qa [optional feature or page scope]`. Codex does not provide a `/ui-qa` slash command. When a developer asks Codex to run UI QA, it must use its configured Playwright MCP server and follow the same contract below. `/mcp` only inspects connected MCP servers; it does not run QA.
+
+This contract applies only when UI QA is requested, including the rendered-site verification step of the feature-delivery workflow. It does not make browser QA mandatory for unrelated Codex tasks or infrastructure-only changes.
+
+- Serve `src/` as static files on a loopback interface only, then test only its `localhost`, `127.0.0.1`, or `[::1]` HTTP URL. Never test `file://`, the deployed portfolio, or an external site. Stop only preview processes you started.
+- Use Playwright MCP for every browser check. If its server/browser, the preview, or the local connection is unavailable, report affected browser checks as **BLOCKED**, never as passed.
+- For the requested page or feature, read the applicable spec and verify relevant acceptance criteria. At both 1440 × 900 and 375 × 667, check page loading and console errors, affected primary navigation and controls, changed interactions, visible keyboard focus for affected controls, horizontal overflow, overlapping content, and clipped essential content. Mark irrelevant checks **NOT APPLICABLE** with a reason.
+- Report every check as **PASSED**, **FAILED**, **BLOCKED**, or **NOT APPLICABLE** in a table containing the check, status, page, viewport, and notes. For each failure, give expected versus observed behavior and reproducible steps starting with the local preview URL. Do not claim overall success if a required check failed or was blocked.
+
 ## Workflow for agents
 
 There are two implementer agents, split by domain:

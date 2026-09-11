@@ -15,9 +15,21 @@ This project follows a **Specs-First Development** approach, where specification
 There are two ways to build a feature or change on this site:
 
 1. **Manual**: ask the `spec-writer` agent to write a spec in `specs/`, then ask the `frontend-developer` agent to implement it against that spec.
-2. **`build-feature` skill**: run `/build-feature <description>` to drive the whole pipeline in one go — it classifies the request, delegates to `spec-writer` when a spec is needed, builds an implementation brief, hands off to `frontend-developer`, and verifies the result in a browser.
+2. **`build-feature` skill**: run `/build-feature <description>` to drive the whole pipeline in one go — it classifies the request, delegates to `spec-writer` when a spec is needed, builds an implementation brief, hands off to the matching implementer, and runs browser QA for rendered-site work before completion.
 
 Either way, no code is implemented without a spec in `specs/` (see `AGENTS.md`).
+
+### UI QA
+
+The repository configures the same loopback-only Playwright MCP server for three supported clients. It may provision the server and browser through `npx` on the developer machine, without adding a website dependency. QA serves `src/` locally and never uses or changes the deployed site.
+
+| Client | Project configuration | How to use it |
+| --- | --- | --- |
+| Claude Code | `.mcp.json` | Trust/open the repository and approve the project MCP server if prompted, then run `/ui-qa [optional feature or page scope]`. It delegates to the `ui-qa` agent and reports each check as PASSED, FAILED, BLOCKED, or NOT APPLICABLE. |
+| Codex | `.codex/config.toml` | Open the repository as a trusted project and approve the configured MCP server or `npx` execution if prompted. Ask Codex to run UI QA; it performs the same local QA and report contract in `AGENTS.md`. Codex has no `/ui-qa` command. |
+| VS Code/Copilot | `.vscode/mcp.json` | Open the repository as a trusted workspace and approve the configured MCP server if prompted. |
+
+With no scope, Claude Code UI QA checks the home page; provide a changed page or feature scope to check affected pages. In every client, `/mcp` only inspects connected MCP servers; it does not run UI QA.
 
 ---
 
@@ -26,8 +38,13 @@ Either way, no code is implemented without a spec in `specs/` (see `AGENTS.md`).
 ```text
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
-│   ├── agents/          # Agent definitions (spec-writer, frontend-developer)
-│   └── skills/          # Skill definitions (build-feature)
+│   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops, ui-qa)
+│   └── skills/          # Skill definitions (build-feature, build-spec, ui-qa, update-changelog)
+├── .codex/
+│   └── config.toml      # Trusted-project Playwright MCP configuration for Codex
+├── .vscode/
+│   └── mcp.json         # Workspace-local Playwright MCP configuration
+├── .mcp.json            # Project-scoped Playwright MCP configuration for Claude Code
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
