@@ -1,9 +1,13 @@
-import { test, expect } from '@playwright/test';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { test } from '@playwright/test';
+
+const homePageUrl = pathToFileURL(
+  path.resolve(__dirname, '../src/index.html'),
+).toString();
 
 test('test', async ({ page }) => {
-  await page.goto(
-    'file:///C:/Users/drens/source/repos/kaloyandrenski.com/src/index.html',
-  );
+  await page.goto(homePageUrl);
   await page.getByRole('link', { name: 'Get in touch' }).click();
   const page1Promise = page.waitForEvent('popup');
   await page.getByRole('link', { name: 'View the source' }).click();
