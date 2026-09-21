@@ -5,7 +5,7 @@ All notable changes to kaloyandrenski.com are documented in this file. Entries a
 ## 2026-09-11
 
 ### Added
-- **Playwright MCP UI QA** — added local browser-based QA for rendered-site features in VS Code/Copilot, Claude Code, and Codex, available automatically through the feature workflow or on demand with Claude Code’s `/ui-qa`. ([spec](specs/5-playwright-mcp-ui-qa.md))
+- **Playwright MCP UI QA** — added local browser-based QA for rendered-site features in VS Code/Copilot and Claude Code, available automatically through the feature workflow or on demand with Claude Code’s `/ui-qa`. ([spec](specs/5-playwright-mcp-ui-qa.md))
 
 ## 2026-08-27
 

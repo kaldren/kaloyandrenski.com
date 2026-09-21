@@ -70,7 +70,7 @@ Run UI QA for every change with a browser-visible result. Skip it for backend, i
 
 Use the repository's configured Playwright MCP server for all browser checks. Serve `src/` on loopback only, test the local HTTP URL at desktop and phone sizes, and never use `file://` or the deployed site. The `.claude/agents/ui-qa.md` agent owns the detailed checks and report format.
 
-In Claude Code, `/ui-qa [optional feature or page scope]` delegates to that agent. In Codex, follow the same agent contract with the configured local Playwright MCP server.
+In Claude Code, `/ui-qa [optional feature or page scope]` delegates to that agent.
 
 ## Workflow for agents
 
