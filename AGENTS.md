@@ -15,7 +15,7 @@ The website is a single-page experience, with dedicated pages only for blog post
 ```text
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
-│   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops)
+│   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops, ui-qa, blog-writer)
 │   └── skills/          # Skill definitions (build-feature, build-spec, update-changelog)
 ├── scripts/             # Build scripts (build-blog.mjs, run via `npm run build:blog`)
 ├── src/                 # Website source code
@@ -93,6 +93,8 @@ Two equivalent ways to deliver a feature:
 - **`build-feature` skill** (`.claude/skills/build-feature/SKILL.md`): runs the same pipeline end to end — domain + weight classification, spec-writer, a domain-specific implementation brief, the matching implementer agent, and verification.
 
 To just start or iterate on a spec without building yet, use the **`build-spec` skill** (`.claude/skills/build-spec/SKILL.md`) — an interactive front end to `spec-writer` that stops once the spec is finalized.
+
+To write or edit a blog post, delegate to the **`blog-writer`** agent (`.claude/agents/blog-writer.md`). Posts are content, not features: they need no spec or changelog entry, and a successful `npm run build:blog` is their verification.
 
 To add or fix a changelog entry outside the full pipeline (a manual change, a retroactive entry), use the **`update-changelog` skill** (`.claude/skills/update-changelog/SKILL.md`) directly — `build-feature` also calls it internally at delivery time.
 
