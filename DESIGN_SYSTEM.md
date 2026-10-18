@@ -2,7 +2,7 @@
 
 The single source of truth for the visual language of kaloyandrenski.com. Every UI implementation must follow this document. If a spec under `specs/` conflicts with this file on visual details (color, type, spacing), this file wins unless the spec explicitly overrides it for a stated reason.
 
-This site is a minimal, fast, content-focused professional portfolio. Every choice below optimizes for clarity and performance over decoration — plain CSS3, no preprocessors, no external font/icon services, no build step (see `AGENTS.md`).
+This site is a minimal, fast, content-focused professional portfolio. Every choice below optimizes for clarity and performance over decoration — plain CSS3, no preprocessors, no external font/icon services, no runtime JS libraries; the only build step is the blog generator described in `AGENTS.md`.
 
 ## Colors
 
@@ -48,6 +48,27 @@ Not part of the brand palette but required for a readable content site. Keep the
 - Dark sections (hero, footer): `--color-primary` background with `--color-text-on-dark` text and `--color-secondary` or `--color-accent-warm` for accents/links on top of it.
 - Never place body text in `--color-secondary`, `--color-accent-warm`, or `--color-accent-warm-strong` on a light background — none meet AA contrast for text at that size.
 
+### Code
+
+Used only for code blocks, inline code, and build-time syntax highlighting on blog posts. The code surface is a dark navy derived from `--color-primary` (same hue, darker), so code reads as part of the brand rather than a foreign theme. Syntax colors stay in the brand families where possible. Every text/syntax color meets at least 4.5:1 on `--color-code-bg` (WCAG 2.x relative-luminance ratios, computed against `#011E2C`).
+
+| Role | Hex | Custom property | Contrast on code bg |
+|---|---|---|---|
+| Code background | `#011E2C` | `--color-code-bg` | n/a |
+| Code text (default) | `#E6EEF2` | `--color-code-text` | 14.61:1 |
+| Code border | `#0E4A66` | `--color-code-border` | n/a (decorative edge) |
+| Keyword (sky-blue family, = Sky Blue) | `#8ECAE6` | `--color-syntax-keyword` | 9.60:1 |
+| String (amber family, = Amber Flame) | `#FFB703` | `--color-syntax-string` | 9.83:1 |
+| Number / literal (orange family, = Tiger Orange) | `#FB8500` | `--color-syntax-number` | 6.91:1 |
+| Comment (muted) | `#7E909D` | `--color-syntax-comment` | 5.20:1 |
+| Function / title (blue-green family, lightened) | `#3CC2DE` | `--color-syntax-function` | 8.14:1 |
+| Type / attribute (soft mint) | `#9FE0C8` | `--color-syntax-type` | 11.42:1 |
+
+Rules:
+- Use these tokens only inside code surfaces (`pre`/`code`). They aren't general-purpose UI colors.
+- Inline code uses the same `--color-code-bg`/`--color-code-text` pair as code blocks, as a small `--radius-sm` pill.
+- Comments are intentionally the lowest-contrast syntax color, but never below 4.5:1.
+
 ### CSS custom properties
 
 Define these once (e.g. in a root stylesheet) and reference them everywhere — no hardcoded hex values in component CSS.
@@ -68,6 +89,17 @@ Define these once (e.g. in a root stylesheet) and reference them everywhere — 
   --color-text: #1A2530;
   --color-text-muted: #5B6B78;
   --color-text-on-dark: #F7F9FA;
+
+  /* code (blog) */
+  --color-code-bg: #011E2C;
+  --color-code-text: #E6EEF2;
+  --color-code-border: #0E4A66;
+  --color-syntax-keyword: #8ECAE6;
+  --color-syntax-string: #FFB703;
+  --color-syntax-number: #FB8500;
+  --color-syntax-comment: #7E909D;
+  --color-syntax-function: #3CC2DE;
+  --color-syntax-type: #9FE0C8;
 }
 ```
 

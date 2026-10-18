@@ -28,6 +28,8 @@ The repository configures the same loopback-only Playwright MCP server for two s
 | Claude Code | `.mcp.json` | Trust/open the repository and approve the project MCP server if prompted, then run `/ui-qa [optional feature or page scope]`. It delegates to the `ui-qa` agent and reports each check as PASSED, FAILED, BLOCKED, or NOT APPLICABLE. |
 | VS Code/Copilot | `.vscode/mcp.json` | Open the repository as a trusted workspace and approve the configured MCP server if prompted. |
 
+Blog posts are markdown files in `src/blog/posts/`; CI turns them into pages on deploy. To preview generated blog pages locally, run `npm install` then `npm run build:blog` and serve the gitignored `_site/` folder.
+
 With no scope, Claude Code UI QA checks the home page; provide a changed page or feature scope to check affected pages. In every client, `/mcp` only inspects connected MCP servers; it does not run UI QA.
 
 ---
@@ -42,8 +44,10 @@ kaloyandrenski.com/
 ├── .vscode/
 │   └── mcp.json         # Workspace-local Playwright MCP configuration
 ├── .mcp.json            # Project-scoped Playwright MCP configuration for Claude Code
+├── scripts/             # Blog build script (`npm run build:blog`)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
+│   ├── blog/            # Blog posts (markdown) and page templates
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
 ├── specs/               # Feature specifications (one file per feature)
 │   └── TEMPLATE.md      # Spec format for new features

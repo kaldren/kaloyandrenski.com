@@ -44,7 +44,7 @@ This is the part that makes the pipeline worth running instead of just handing t
   - Accessibility notes (keyboard nav, contrast, semantics) relevant to this specific feature.
 
 **DevOps/infra:**
-- Re-read `AGENTS.md`'s Tech Stack (Tooling & build process, Hosting & deployment) and Rules sections — these are hard constraints (no build step, no new runtime dependencies in `src/`).
+- Re-read `AGENTS.md`'s Tech Stack (Tooling & build process, Hosting & deployment) and Rules sections — these are hard constraints (no build steps beyond the blog generator, no new runtime dependencies in `src/`).
 - Skim existing files under `.github/workflows/` and any repo-root deployment files (e.g. `CNAME`) so new work matches current structure and doesn't duplicate or conflict with it. If none exist yet, note there's no existing convention to match yet.
 - Write a short, concrete brief covering:
   - Which workflow file(s) or repo-root config to create or touch.

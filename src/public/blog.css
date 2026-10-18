@@ -1,0 +1,449 @@
+/* ==========================================================================
+   Blog (spec: specs/6-markdown-blog.md)
+   Loaded after styles.css, which provides the design tokens, base styles,
+   header/nav, and footer. No hex values here: tokens only (DESIGN_SYSTEM.md).
+   ========================================================================== */
+
+/* ---------- Active nav item ---------- */
+
+.nav-list a[aria-current="page"] {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-warm);
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--space-1);
+}
+
+/* ---------- Page layout ---------- */
+
+.blog-main {
+  padding-block: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .blog-main {
+    padding-block: var(--space-16);
+  }
+}
+
+.post,
+.blog-index {
+  width: min(100% - 2 * var(--space-4), 70ch);
+  margin-inline: auto;
+}
+
+@media (min-width: 768px) {
+  .post,
+  .blog-index {
+    width: min(100% - 2 * var(--space-6), 70ch);
+  }
+}
+
+.post__back {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.post__back a,
+.post__footer-nav a {
+  text-decoration: none;
+}
+
+.post__back a:hover,
+.post__footer-nav a:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Post header ---------- */
+
+.post__header {
+  padding-bottom: var(--space-6);
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post__title,
+.blog-index__title {
+  font-size: var(--text-2xl);
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 768px) {
+  .post__title,
+  .blog-index__title {
+    font-size: var(--text-3xl);
+  }
+}
+
+.post__meta {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Post body: reading column & rhythm ---------- */
+
+.post-body {
+  font-size: var(--text-base);
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+.post-body > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.post-body > * + * {
+  margin-top: var(--space-6);
+}
+
+.post-body h2 {
+  font-size: var(--text-xl);
+  margin-bottom: 0;
+}
+
+.post-body h3 {
+  font-size: var(--text-lg);
+}
+
+@media (min-width: 768px) {
+  .post-body h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .post-body h3 {
+    font-size: var(--text-xl);
+  }
+}
+
+.post-body > h2 + *,
+.post-body > h3 + * {
+  margin-top: var(--space-4);
+}
+
+.post-body > * + h2 {
+  margin-top: var(--space-12);
+}
+
+.post-body > * + h3 {
+  margin-top: var(--space-8);
+}
+
+.post-body a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.post-body a:hover {
+  color: var(--color-primary);
+}
+
+.post-body strong {
+  font-weight: 700;
+}
+
+/* lists (styles.css resets ul to unstyled; restore for prose) */
+
+.post-body ul,
+.post-body ol {
+  padding-left: var(--space-6);
+}
+
+.post-body ul {
+  list-style: disc;
+}
+
+.post-body ol {
+  list-style: decimal;
+}
+
+.post-body li + li {
+  margin-top: var(--space-2);
+}
+
+.post-body li > ul,
+.post-body li > ol {
+  margin-top: var(--space-2);
+}
+
+.post-body li::marker {
+  color: var(--color-accent);
+}
+
+/* blockquote */
+
+.post-body blockquote {
+  margin-inline: 0;
+  padding: var(--space-2) var(--space-4);
+  border-left: var(--space-1) solid var(--color-accent);
+  background-color: var(--color-bg-subtle);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.post-body blockquote > * + * {
+  margin-top: var(--space-4);
+}
+
+/* horizontal rule */
+
+.post-body hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.post-body > hr,
+.post-body > hr + * {
+  margin-top: var(--space-12);
+}
+
+/* ---------- Figures ---------- */
+
+.post-figure {
+  padding: var(--space-4);
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+@media (min-width: 768px) {
+  .post-figure {
+    padding: var(--space-6);
+  }
+}
+
+.post-figure img {
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+  border-radius: var(--radius-sm);
+}
+
+.post-figure figcaption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* ---------- Tables ---------- */
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table-wrap th,
+.table-wrap td {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  vertical-align: top;
+}
+
+.table-wrap th {
+  background-color: var(--color-primary);
+  color: var(--color-text-on-dark);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.table-wrap tbody tr + tr td {
+  border-top: 1px solid var(--color-border);
+}
+
+.table-wrap tbody tr:nth-child(even) {
+  background-color: var(--color-bg-subtle);
+}
+
+/* ---------- Inline code ---------- */
+
+.post-body :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.125em var(--space-1);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  overflow-wrap: anywhere;
+}
+
+/* keep code in table cells on one line; the table scrolls sideways instead */
+.table-wrap code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+/* ---------- Code blocks ---------- */
+
+.code-block {
+  overflow-x: auto;
+  padding: var(--space-4);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  white-space: pre;
+  tab-size: 2;
+}
+
+@media (min-width: 768px) {
+  .code-block {
+    padding: var(--space-4) var(--space-6);
+  }
+}
+
+.code-block code {
+  font: inherit;
+  background: none;
+  color: inherit;
+  padding: 0;
+  white-space: inherit;
+}
+
+/* ---------- Syntax theme (highlight.js classes, emitted at build time) ---------- */
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-meta,
+.hljs-meta .hljs-keyword {
+  color: var(--color-syntax-keyword);
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-char,
+.hljs-symbol,
+.hljs-meta .hljs-string {
+  color: var(--color-syntax-string);
+}
+
+.hljs-number,
+.hljs-literal,
+.hljs-literal .hljs-keyword {
+  color: var(--color-syntax-number);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--color-syntax-comment);
+  font-style: italic;
+}
+
+.hljs-title,
+.hljs-title.function_,
+.hljs-section,
+.hljs-variable,
+.hljs-template-variable {
+  color: var(--color-syntax-function);
+}
+
+.hljs-type,
+.hljs-built_in,
+.hljs-title.class_,
+.hljs-attr,
+.hljs-attribute,
+.hljs-selector-class,
+.hljs-selector-id {
+  color: var(--color-syntax-type);
+}
+
+.hljs-params,
+.hljs-subst,
+.hljs-property,
+.hljs-punctuation {
+  color: var(--color-code-text);
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: 700;
+}
+
+/* ---------- Post footer nav ---------- */
+
+.post__footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: var(--space-12);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+/* ---------- Blog index ---------- */
+
+.blog-index__header {
+  margin-bottom: var(--space-8);
+}
+
+.blog-index__intro {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.post-list {
+  border-top: 1px solid var(--color-border);
+}
+
+.post-list__item {
+  padding-block: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-list__title {
+  font-size: var(--text-xl);
+  margin-bottom: 0;
+}
+
+.post-list__title a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.post-list__title a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.post-list__item time {
+  display: block;
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.post-list__summary {
+  margin-top: var(--space-2);
+}
+
+/* ---------- Motion ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .post-body a,
+  .post__back a,
+  .post__footer-nav a,
+  .post-list__title a {
+    transition: color 150ms ease;
+  }
+}

@@ -18,6 +18,17 @@
   --color-text-muted: #5B6B78;
   --color-text-on-dark: #F7F9FA;
 
+  /* code (blog) */
+  --color-code-bg: #011E2C;
+  --color-code-text: #E6EEF2;
+  --color-code-border: #0E4A66;
+  --color-syntax-keyword: #8ECAE6;
+  --color-syntax-string: #FFB703;
+  --color-syntax-number: #FB8500;
+  --color-syntax-comment: #7E909D;
+  --color-syntax-function: #3CC2DE;
+  --color-syntax-type: #9FE0C8;
+
   /* type */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;

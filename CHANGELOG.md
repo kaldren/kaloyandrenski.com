@@ -2,6 +2,12 @@
 
 All notable changes to kaloyandrenski.com are documented in this file. Entries are grouped by date, newest first, and cover feature-level additions and changes — not every commit.
 
+## 2026-10-18
+
+### Added
+- **Markdown blog** — a new Blog page, linked from the main nav, lists posts newest first. Each post is written as a single markdown file and reads cleanly, with framed images, styled tables, dark syntax-highlighted code blocks and dark pills for inline code like `SKILL.md`. ([spec](specs/6-markdown-blog.md))
+- **Blog build pipeline** — publishing a post is now just pushing its markdown file. The deploy workflow turns posts into finished pages, updates the blog index automatically, and stops the deploy if a post's metadata is missing or malformed. ([spec](specs/7-blog-build-pipeline.md))
+
 ## 2026-09-11
 
 ### Added

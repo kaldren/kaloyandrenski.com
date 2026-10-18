@@ -20,11 +20,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Stage site contents for publishing
-        run: |
-          mkdir _site
-          cp -r src/* _site/
-          cp CNAME _site/
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install build dependencies
+        run: npm ci
+
+      - name: Build site with blog pages into _site
+        run: npm run build:blog
+
+      - name: Add CNAME for the custom domain
+        run: cp CNAME _site/
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
