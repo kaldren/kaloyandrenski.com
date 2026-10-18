@@ -16,7 +16,7 @@ The website is a single-page experience, with dedicated pages only for blog post
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
 │   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops, ui-qa, blog-writer)
-│   └── skills/          # Skill definitions (build-feature, build-spec, update-changelog)
+│   └── skills/          # Skill definitions (build-feature, build-spec, update-changelog, ui-qa, seo-review)
 ├── scripts/             # Build scripts (build-blog.mjs, run via `npm run build:blog`)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
@@ -95,6 +95,8 @@ Two equivalent ways to deliver a feature:
 To just start or iterate on a spec without building yet, use the **`build-spec` skill** (`.claude/skills/build-spec/SKILL.md`) — an interactive front end to `spec-writer` that stops once the spec is finalized.
 
 To write or edit a blog post, delegate to the **`blog-writer`** agent (`.claude/agents/blog-writer.md`). Posts are content, not features: they need no spec or changelog entry, and a successful `npm run build:blog` is their verification.
+
+To check a post's on-page SEO (title, summary, slug, headings, links, alt text), use the **`seo-review` skill** (`.claude/skills/seo-review/SKILL.md`) — `blog-writer` also runs it as its final pass.
 
 To add or fix a changelog entry outside the full pipeline (a manual change, a retroactive entry), use the **`update-changelog` skill** (`.claude/skills/update-changelog/SKILL.md`) directly — `build-feature` also calls it internally at delivery time.
 
