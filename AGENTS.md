@@ -8,7 +8,7 @@ kaloyandrenski.com is a personal website that serves as a professional portfolio
 
 The goal is to build a minimal, fast, and content-focused website that showcases his professional profile, expertise, certifications, and technical writing.
 
-The website is a single-page experience, with dedicated pages only for blog posts.
+The website is a single-page experience, with dedicated pages only for blog posts and a single `/agents/` page showcasing the AI agents that build the site.
 
 ## Project Structure
 
@@ -20,6 +20,7 @@ kaloyandrenski.com/
 ├── scripts/             # Build scripts (build-blog.mjs, run via `npm run build:blog`)
 ├── src/                 # Website source code
 │   ├── index.html       # Single-page site entry point
+│   ├── agents/          # Agents page sources: template.html and crew.json (personas), see specs 8 and 9
 │   ├── blog/            # Blog sources: posts/ (markdown) and templates/ (HTML), see specs 6 and 7
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
 ├── specs/               # Feature specifications (one file per feature)
@@ -41,7 +42,7 @@ kaloyandrenski.com/
 ### Tooling & build process
 
 - npm dev dependencies (in the root `package.json`, pinned by `package-lock.json`) and a blog build script are allowed when they make things easier. No bundler, and nothing compiled or transformed except the blog build.
-- The blog build (`scripts/build-blog.mjs`, run with `npm run build:blog`) copies `src/` into the gitignored `_site/` and generates the blog post pages and blog index from `src/blog/` (see `specs/7-blog-build-pipeline.md`). CI publishes `_site/`; generated HTML is never committed.
+- The blog build (`scripts/build-blog.mjs`, run with `npm run build:blog`) copies `src/` into the gitignored `_site/` and generates the blog post pages and blog index from `src/blog/` (see `specs/7-blog-build-pipeline.md`). It also generates the `/agents/` page from `src/agents/` and the agent/skill definitions in `.claude/` (see `specs/9-agents-page-build.md`). CI publishes `_site/`; generated HTML is never committed.
 - The site's runtime stays plain HTML/CSS/vanilla JS with no frameworks. No JS library is shipped to the browser unless a spec justifies it.
 - All other files are authored directly and served as-is.
 - Local preview: open the HTML files directly in a browser, or use any simple static file server. Run `npm install` then `npm run build:blog` to preview generated blog pages in `_site/`.
@@ -67,12 +68,13 @@ This site is meant to be minimal, fast, and content-focused. A plain HTML/CSS/JS
 - **Numbered spec filenames**: each spec file is named `specs/<n>-<kebab-case-feature-name>.md`, where `<n>` is the next sequential integer across all specs in `specs/` (1, 2, 3, ...) in the order they were created. This keeps spec creation order visible at a glance.
 - **Simplicity**: no frameworks and no unnecessary dependencies. npm dev dependencies and the blog build script (`npm run build:blog`, producing `_site/`) are allowed when they make things easier; otherwise there is no build step. The runtime stays plain HTML/CSS/vanilla JS, with no JS library shipped to the browser unless a spec justifies it.
 - **Changelog required**: every feature implementation (not trivial tweaks) gets an entry in `CHANGELOG.md`, written via the `update-changelog` skill (`.claude/skills/update-changelog/SKILL.md`) — see the Workflow section below.
+- **Agents page stays in sync**: the `/agents/` page and the homepage agents callout show the AI crew that builds this site. Whenever an agent or skill is added to, renamed in, or removed from `.claude/agents/` or `.claude/skills/`, update `src/agents/crew.json` in the same change: give it a `lane` (`feature`, `content` or `support`), an `order`, a `glyph`, a first-person `line` that matches its definition, what it `owns`, and a `replay` line if it's in the feature lane. The build fails until every definition has an entry, so an unplaced agent can never ship.
 
 ## Local UI QA
 
 Run UI QA for every change with a browser-visible result. Skip it for backend, infrastructure, or other changes with no rendered or interactive effect.
 
-Generated blog pages (post pages and the blog index produced by `npm run build:blog`) are exempt from Local UI QA; a successful build is their verification. Local UI QA still covers the blog templates and CSS as served from `src/`.
+Generated pages (the blog post pages, the blog index, and the `/agents/` page produced by `npm run build:blog`) are exempt from Local UI QA; a successful build is their verification. Local UI QA still covers the blog templates and CSS, and the agents template, CSS, and JS, as served from `src/`.
 
 Use the repository's configured Playwright MCP server for all browser checks. Serve `src/` on loopback only, test the local HTTP URL at desktop and phone sizes, and never use `file://` or the deployed site. The `.claude/agents/ui-qa.md` agent owns the detailed checks and report format.
 

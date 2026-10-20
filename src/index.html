@@ -87,6 +87,30 @@
             </div>
           </li>
         </ul>
+        <aside class="agents-callout" aria-labelledby="agents-callout-title">
+          <div class="agents-callout__body">
+            <p class="agents-callout__eyebrow">
+              <span class="agents-callout__dot" aria-hidden="true"></span>Built by AI agents
+            </p>
+            <h3 class="agents-callout__title" id="agents-callout-title">Want to see how this website was built?</h3>
+            <p class="agents-callout__text">
+              A crew of AI agents writes the specs, code, tests and blog posts behind this site, with me
+              directing. Meet them and watch them ship a feature.
+            </p>
+            <a class="btn btn--on-dark" href="/agents/">Meet the agents <span aria-hidden="true">&rarr;</span></a>
+          </div>
+          <ol class="agents-callout__crew" aria-hidden="true">
+            <!-- Glyphs below are generated from src/agents/crew.json by the build (specs/9-agents-page-build.md). -->
+            <!-- BUILD:crew-glyphs -->
+            <li class="agents-callout__glyph agents-callout__glyph--human">KD</li>
+            <li class="agents-callout__glyph">SW</li>
+            <li class="agents-callout__glyph">FE</li>
+            <li class="agents-callout__glyph">DO</li>
+            <li class="agents-callout__glyph">QA</li>
+            <li class="agents-callout__glyph">BW</li>
+            <!-- /BUILD:crew-glyphs -->
+          </ol>
+        </aside>
       </div>
     </section>
 
@@ -299,7 +323,7 @@
       </ul>
       <p class="site-footer__copyright">&copy; 2026 Kaloyan Drenski</p>
       <p class="site-footer__attribution">
-        Built with Human + AI collaboration, using spec-driven development.
+        <a href="/agents/">Built with Human + AI collaboration, using spec-driven development.</a>
         <a href="https://github.com/kaldren/kaloyandrenski.com" target="_blank" rel="noopener noreferrer">View the
           source</a>
       </p>

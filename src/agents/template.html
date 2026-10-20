@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<!--
+  Agents page template (spec: specs/8-agents-page.md). Filled by the build (spec 9,
+  scripts/build-blog.mjs) and published at /agents/ (written to agents/index.html).
+
+  Contract:
+  - All asset and nav links are root-absolute (/public/..., /#about, /blog/), because
+    the page is served from /agents/.
+  - Region marker: everything from BUILD:crew to /BUILD:crew (markers included) is
+    replaced. No other part of this file is changed by the build. The region's
+    top-level elements sit directly inside div.agents (a CSS grid), so the build must
+    emit exactly these five elements, in this order, with nothing wrapped around them.
+    Whitespace and newlines between tags are not significant.
+
+    1. Status line. {A} = number of agent definitions, {S} = number of skill
+       definitions (the human is not counted). Use "agent"/"skill" when the count is 1.
+       <p class="crew-status"><span class="crew-status__dot" aria-hidden="true"></span>{A} agents online · {S} skills loaded</p>
+
+    2. Feature lane, then 3. Content lane, each in this shape ({lane} is "feature" or
+       "content"; {Title} is "Feature lane" or "Content lane"):
+       <section class="lane" data-lane="{lane}" aria-labelledby="lane-{lane}">
+       <h2 class="lane__title" id="lane-{lane}">{Title}</h2>
+       <ol class="lane__steps">
+       ...steps...
+       </ol>
+       </section>
+       Steps: the first step of every lane is the human node with data-order set to the
+       human's order. Then the lane's entries sorted by `order` ascending; entries with
+       equal `order` share one step (a branch) and get the extra lane__step--branch class:
+       <li class="lane__step" data-order="{order}">{node}</li>
+       <li class="lane__step lane__step--branch" data-order="{order}">{node}{node}</li>
+       Within a branch step, keep crew.json order.
+
+    4. Support row: entries with lane "support" sorted by `order` (then id). Every
+       definition in .claude/ must have a crew.json entry, or the build fails:
+       <section class="crew-support" aria-labelledby="lane-support">
+       <h2 class="lane__title" id="lane-support">On call</h2>
+       <ul class="crew-support__list">
+       <li class="crew-support__item">{node}</li>
+       </ul>
+       </section>
+
+    {node} is one button; {kind} is "agent", "skill" or "human" (the kind label text is
+    the kind itself):
+       <button type="button" class="node node--{kind}" data-key="{kind}:{id}" aria-pressed="false"><span class="node__glyph" aria-hidden="true">{glyph}</span><span class="node__name">{name}</span><span class="node__kind">{kind}</span></button>
+
+    5. Data block: a JSON array with one object per crew member (the human once, each
+       agent and skill once). Array order is not significant. Inside the script, every
+       "<", ">" and "&" is written as <, > and &.
+       <script type="application/json" id="crew-data">[ {entry}, ... ]</script>
+       Entry fields (all always present; null where noted):
+         key          "{kind}:{id}", unique; matches the node's data-key
+         id           crew.json id = the definition's frontmatter `name`
+         kind         "agent" | "skill" | "human"
+         lane         "feature" | "content" | "support"; null for the human
+         order        number from crew.json
+         glyph        crew.json glyph
+         name         display name: crew.json `name` if present, otherwise id
+         line         crew.json first-person line
+         owns         array of strings from crew.json; [] if none
+         replay       crew.json replay line, or null
+         description  definition frontmatter `description`; null for the human
+         tools        definition `tools` as an array of trimmed strings (a
+                      comma-separated string is split on commas); null if absent
+         model        definition `model` string; null if absent
+         path         repo-relative definition path, e.g. ".claude/agents/devops.md";
+                      null for the human
+         url          "https://github.com/kaldren/kaloyandrenski.com/blob/main/{path}";
+                      null for the human
+
+    All text placed in markup ({glyph}, {name}, {Title}, attribute values) is
+    HTML-escaped. The sample region below is the real crew rendered in exactly this
+    shape, so opening this file from src/ previews and QAs the whole page.
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meet the crew — Kaloyan Drenski</title>
+  <meta name="description" content="Meet the AI agents and skills that build kaloyandrenski.com: a spec-driven, multi-agent crew working with Kaloyan Drenski, from spec to changelog.">
+  <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="/public/android-chrome-192x192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/public/android-chrome-512x512.png">
+  <link rel="stylesheet" href="/public/styles.css">
+  <link rel="stylesheet" href="/public/agents.css">
+  <script type="module" src="/public/agents.js"></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <span class="site-mark">Kaloyan Drenski</span>
+      <nav aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="/#home">Home</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#certifications">Certifications</a></li>
+          <li><a href="/blog/">Blog</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="agents-main">
+    <div class="container agents">
+      <header class="agents__header">
+        <p class="agents__back"><a href="/">&larr; Back to the main site</a></p>
+        <h1 class="agents__title">Meet the crew</h1>
+        <p class="agents__intro">This site is built by a small crew of AI agents and skills, working from specs that Kaloyan approves. Every node below comes from a real definition in the site's repository. Select one to hear what it does, or run the feature pipeline to watch a change go from request to changelog.</p>
+        <div class="agents__controls">
+          <button type="button" class="replay-button" id="replay-button" hidden>Run build-feature</button>
+        </div>
+      </header>
+
+<!-- BUILD:crew -->
+<p class="crew-status"><span class="crew-status__dot" aria-hidden="true"></span>5 agents online · 5 skills loaded</p>
+<section class="lane" data-lane="feature" aria-labelledby="lane-feature">
+<h2 class="lane__title" id="lane-feature">Feature lane</h2>
+<ol class="lane__steps">
+<li class="lane__step" data-order="0"><button type="button" class="node node--human" data-key="human:you" aria-pressed="false"><span class="node__glyph" aria-hidden="true">KD</span><span class="node__name">Kaloyan</span><span class="node__kind">human</span></button></li>
+<li class="lane__step" data-order="1"><button type="button" class="node node--skill" data-key="skill:build-feature" aria-pressed="false"><span class="node__glyph" aria-hidden="true">BF</span><span class="node__name">build-feature</span><span class="node__kind">skill</span></button></li>
+<li class="lane__step" data-order="2"><button type="button" class="node node--agent" data-key="agent:spec-writer" aria-pressed="false"><span class="node__glyph" aria-hidden="true">SW</span><span class="node__name">spec-writer</span><span class="node__kind">agent</span></button></li>
+<li class="lane__step lane__step--branch" data-order="3"><button type="button" class="node node--agent" data-key="agent:frontend-developer" aria-pressed="false"><span class="node__glyph" aria-hidden="true">FE</span><span class="node__name">frontend-developer</span><span class="node__kind">agent</span></button><button type="button" class="node node--agent" data-key="agent:devops" aria-pressed="false"><span class="node__glyph" aria-hidden="true">DO</span><span class="node__name">devops</span><span class="node__kind">agent</span></button></li>
+<li class="lane__step" data-order="4"><button type="button" class="node node--agent" data-key="agent:ui-qa" aria-pressed="false"><span class="node__glyph" aria-hidden="true">QA</span><span class="node__name">ui-qa</span><span class="node__kind">agent</span></button></li>
+<li class="lane__step" data-order="5"><button type="button" class="node node--skill" data-key="skill:update-changelog" aria-pressed="false"><span class="node__glyph" aria-hidden="true">CL</span><span class="node__name">update-changelog</span><span class="node__kind">skill</span></button></li>
+</ol>
+</section>
+<section class="lane" data-lane="content" aria-labelledby="lane-content">
+<h2 class="lane__title" id="lane-content">Content lane</h2>
+<ol class="lane__steps">
+<li class="lane__step" data-order="0"><button type="button" class="node node--human" data-key="human:you" aria-pressed="false"><span class="node__glyph" aria-hidden="true">KD</span><span class="node__name">Kaloyan</span><span class="node__kind">human</span></button></li>
+<li class="lane__step" data-order="1"><button type="button" class="node node--agent" data-key="agent:blog-writer" aria-pressed="false"><span class="node__glyph" aria-hidden="true">BW</span><span class="node__name">blog-writer</span><span class="node__kind">agent</span></button></li>
+<li class="lane__step" data-order="2"><button type="button" class="node node--skill" data-key="skill:seo-review" aria-pressed="false"><span class="node__glyph" aria-hidden="true">SEO</span><span class="node__name">seo-review</span><span class="node__kind">skill</span></button></li>
+</ol>
+</section>
+<section class="crew-support" aria-labelledby="lane-support">
+<h2 class="lane__title" id="lane-support">On call</h2>
+<ul class="crew-support__list">
+<li class="crew-support__item"><button type="button" class="node node--skill" data-key="skill:build-spec" aria-pressed="false"><span class="node__glyph" aria-hidden="true">BS</span><span class="node__name">build-spec</span><span class="node__kind">skill</span></button></li>
+<li class="crew-support__item"><button type="button" class="node node--skill" data-key="skill:ui-qa" aria-pressed="false"><span class="node__glyph" aria-hidden="true">/QA</span><span class="node__name">ui-qa</span><span class="node__kind">skill</span></button></li>
+</ul>
+</section>
+<script type="application/json" id="crew-data">
+[
+{"key":"human:you","id":"you","kind":"human","lane":null,"order":0,"glyph":"KD","name":"Kaloyan","line":"I set the direction, approve every spec and implementation brief, and decide what ships.","owns":["Direction and priorities","Spec and brief approvals","The final say on what ships"],"replay":"Asked for a page that introduces the crew.","description":null,"tools":null,"model":null,"path":null,"url":null},
+{"key":"skill:build-feature","id":"build-feature","kind":"skill","lane":"feature","order":1,"glyph":"BF","name":"build-feature","line":"I run a feature end to end: classify the request, get a spec, write the implementation brief, hand it to the right implementer, then verify the result.","owns":["The feature delivery pipeline","Implementation briefs","Verification against acceptance criteria"],"replay":"Classified it as a feature spanning frontend and devops. Calling spec-writer.","description":"End-to-end feature delivery pipeline for kaloyandrenski.com. Classifies the request (trivial tweak vs. feature, and frontend vs. devops/infra), delegates spec creation to spec-writer when a spec is needed, researches the right conventions to produce a concrete implementation brief, hands the spec + brief to frontend-developer or devops depending on the domain, then verifies the result against acceptance criteria. Use whenever the user asks to build, add, change, or fix something on the site or its deployment pipeline.","tools":null,"model":null,"path":".claude/skills/build-feature/SKILL.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/skills/build-feature/SKILL.md"},
+{"key":"agent:spec-writer","id":"spec-writer","kind":"agent","lane":"feature","order":2,"glyph":"SW","name":"spec-writer","line":"I turn a feature request into one numbered spec in specs/. Nobody writes code until I have.","owns":["specs/"],"replay":"Wrote specs/8-agents-page.md and specs/9-agents-page-build.md.","description":"Use this agent whenever a feature for kaloyandrenski.com is about to be implemented and no spec file exists for it yet in specs/. The agent turns a feature request and any supporting inputs (user description, context gathered by the calling agent, links, notes) into a single spec file following specs/TEMPLATE.md. Do not use this agent to implement code — it only writes specs.","tools":["Read","Write","Glob","Grep"],"model":"inherit","path":".claude/agents/spec-writer.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/agents/spec-writer.md"},
+{"key":"agent:frontend-developer","id":"frontend-developer","kind":"agent","lane":"feature","order":3,"glyph":"FE","name":"frontend-developer","line":"I build what the spec describes under src/, in plain HTML, CSS and vanilla JS, strictly by DESIGN_SYSTEM.md.","owns":["src/ markup, styles and scripts","DESIGN_SYSTEM.md extensions"],"replay":"Built the agents template, agents.css and agents.js.","description":"Use this agent to implement frontend work for kaloyandrenski.com — HTML structure, CSS styling, and vanilla JS behavior — once a spec exists in specs/. Expert in plain HTML5, CSS3, and vanilla JavaScript (no frameworks; blog pages are generated from templates by an npm build script). Do not use this agent to write specs (use spec-writer) or to decide what to build — it implements what the spec describes.","tools":["Read","Write","Edit","Glob","Grep","Bash"],"model":"inherit","path":".claude/agents/frontend-developer.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/agents/frontend-developer.md"},
+{"key":"agent:devops","id":"devops","kind":"agent","lane":"feature","order":3,"glyph":"DO","name":"devops","line":"I keep the pipeline running: GitHub Actions workflows, GitHub Pages publishing, the CNAME and the build script. I stay out of src/.","owns":[".github/workflows/","CNAME","scripts/build-blog.mjs"],"replay":"Taught the build to generate /agents/ from the definitions in .claude/.","description":"Use this agent to implement infrastructure, CI/CD, and deployment work for kaloyandrenski.com — GitHub Actions workflows, GitHub Pages publishing configuration, and repo-root deployment files (e.g. CNAME) — once a spec exists in specs/. Expert in GitHub Actions and GitHub Pages for static sites (plus the npm-based blog build). Do not use this agent for site content/markup/styling/behavior work (use frontend-developer), or to write specs (use spec-writer).","tools":["Read","Write","Edit","Glob","Grep","Bash"],"model":"inherit","path":".claude/agents/devops.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/agents/devops.md"},
+{"key":"agent:ui-qa","id":"ui-qa","kind":"agent","lane":"feature","order":4,"glyph":"QA","name":"ui-qa","line":"I test browser-visible changes on the locally served site with Playwright, at desktop and phone sizes. I report; I never edit files.","owns":["Local UI QA reports"],"replay":"Tested the page at desktop and phone sizes and filed a report.","description":"Test browser-visible changes on the locally served site with the repository's Playwright MCP server.","tools":["Read","Glob","Grep","Bash","mcp__playwright__*"],"model":"inherit","path":".claude/agents/ui-qa.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/agents/ui-qa.md"},
+{"key":"skill:update-changelog","id":"update-changelog","kind":"skill","lane":"feature","order":5,"glyph":"CL","name":"update-changelog","line":"I add a dated entry to CHANGELOG.md for every shipped feature, filed under Added, Changed or Removed.","owns":["CHANGELOG.md"],"replay":"Logged the Agents page under Added in CHANGELOG.md.","description":"Adds an entry to CHANGELOG.md for kaloyandrenski.com, following the project's Keep a Changelog style (grouped by date, newest first, categorized as Added/Changed/Removed). Callable standalone for a manual or retroactive entry, or invoked by the build-feature skill at the end of a feature delivery pass. Use whenever the user asks to log, record, or add a changelog entry for a change.","tools":null,"model":null,"path":".claude/skills/update-changelog/SKILL.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/skills/update-changelog/SKILL.md"},
+{"key":"agent:blog-writer","id":"blog-writer","kind":"agent","lane":"content","order":1,"glyph":"BW","name":"blog-writer","line":"I draft and edit posts in Kaloyan's voice as markdown in src/blog/posts/, and I never invent experiences or results.","owns":["src/blog/posts/","src/public/blog/"],"replay":null,"description":"Use this agent to draft, revise, or edit blog posts for kaloyandrenski.com — turning a topic, outline, notes, or rough draft into a finished markdown post in src/blog/posts/ written in Kaloyan's voice. Expert in technical writing on agentic AI, multi-agent systems, and enterprise AI architecture. Do not use this agent to change blog templates, styling, or the build pipeline (use frontend-developer or devops), or to write specs (use spec-writer).","tools":["Read","Write","Edit","Glob","Grep","Bash","WebSearch","WebFetch"],"model":"inherit","path":".claude/agents/blog-writer.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/agents/blog-writer.md"},
+{"key":"skill:seo-review","id":"seo-review","kind":"skill","lane":"content","order":2,"glyph":"SEO","name":"seo-review","line":"I check a post's on-page SEO (title, summary, slug, headings, links and alt text) and suggest fixes. I only apply them when asked.","owns":["SEO findings and suggested fixes for posts"],"replay":null,"description":"Reviews a blog post in src/blog/posts/ for on-page SEO — title, summary (meta description), slug, headings, keyword use, link text, and image alt text — and reports each issue with a suggested fix. Applies fixes only when asked. Callable standalone on any post, and run by the blog-writer agent as its final pass. Use whenever the user asks to check, review, or improve a post's SEO or search visibility.","tools":null,"model":null,"path":".claude/skills/seo-review/SKILL.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/skills/seo-review/SKILL.md"},
+{"key":"skill:build-spec","id":"build-spec","kind":"skill","lane":"support","order":1,"glyph":"BS","name":"build-spec","line":"I'm the conversational front door to spec-writer: I gather your request, relay its questions and iterate until the spec is final. I don't build.","owns":["Interactive spec drafting"],"replay":null,"description":"Interactive front-end for starting the spec-writing process for kaloyandrenski.com. Gathers the feature request from the user, checks specs/ for something that already covers it, delegates drafting to the spec-writer agent, relays any clarifying questions back to the user, and walks them through the result with a chance to revise. Stops once the spec is finalized — does not implement. Use whenever the user wants to start, draft, or update a spec without necessarily building it yet.","tools":null,"model":null,"path":".claude/skills/build-spec/SKILL.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/skills/build-spec/SKILL.md"},
+{"key":"skill:ui-qa","id":"ui-qa","kind":"skill","lane":"support","order":2,"glyph":"/QA","name":"ui-qa","line":"I hand a page or feature scope to the ui-qa agent and pass its report back to you unchanged.","owns":["The /ui-qa command"],"replay":null,"description":"Run local browser QA for a browser-visible feature through the repository's Playwright MCP server.","tools":null,"model":null,"path":".claude/skills/ui-qa/SKILL.md","url":"https://github.com/kaldren/kaloyandrenski.com/blob/main/.claude/skills/ui-qa/SKILL.md"}
+]
+</script>
+<!-- /BUILD:crew -->
+
+      <aside class="console" aria-labelledby="console-title">
+        <div class="console__bar">
+          <span class="console__lights" aria-hidden="true"><span></span><span></span><span></span></span>
+          <h2 class="console__title" id="console-title">Console</h2>
+        </div>
+        <div class="console__body" id="console-body" aria-live="polite">
+          <div class="console__intro">
+            <p class="console__prompt">$ crew --help</p>
+            <p>Every node on this page is a real agent or skill defined in this site's repository, plus the one human who directs them.</p>
+            <p class="console__js-hint" hidden>Hover, tap or Tab to a node and it introduces itself here: what it does, the tools it can use, and what it owns.</p>
+            <noscript><p>Turn on JavaScript to have each node introduce itself here.</p></noscript>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer id="contact" class="site-footer">
+    <div class="container">
+      <h2>Contact</h2>
+      <p><a href="mailto:kaloyandrenski@gmail.com">kaloyandrenski@gmail.com</a></p>
+      <ul class="site-footer__links">
+        <li><a href="https://www.linkedin.com/in/kaloyan-drenski/" target="_blank" rel="noopener noreferrer"><svg
+              viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M4,1 H20 A3,3 0 0 1 23,4 V20 A3,3 0 0 1 20,23 H4 A3,3 0 0 1 1,20 V4 A3,3 0 0 1 4,1 Z M6,6 H8.5 V8.5 H6 Z M6,10 H8.5 V18 H6 Z M11,10 H18.5 V18 H16 V13 H13.5 V18 H11 Z" />
+            </svg>LinkedIn</a></li>
+        <li><a href="https://systemshogun.com" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24"
+              aria-hidden="true" focusable="false">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M2,12 A10,10 0 1,0 22,12 A10,10 0 1,0 2,12 Z M4,12 A8,8 0 1,0 20,12 A8,8 0 1,0 4,12 Z" />
+              <path fill="currentColor" d="M2,11 H22 V13 H2 Z" />
+              <path fill="currentColor" d="M11,2 H13 V22 H11 Z" />
+            </svg>System Shogun</a></li>
+        <li><a href="https://www.youtube.com/@SystemShogun" target="_blank" rel="noopener noreferrer"><svg
+              viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" fill-rule="evenodd"
+                d="M5,5 H19 A4,4 0 0 1 23,9 V15 A4,4 0 0 1 19,19 H5 A4,4 0 0 1 1,15 V9 A4,4 0 0 1 5,5 Z M10,9 L16,12 L10,15 Z" />
+            </svg>YouTube</a></li>
+      </ul>
+      <p class="site-footer__copyright">&copy; 2026 Kaloyan Drenski</p>
+      <p class="site-footer__attribution">
+        Built with Human + AI collaboration, using spec-driven development.
+        <a href="https://github.com/kaldren/kaloyandrenski.com" target="_blank" rel="noopener noreferrer">View the
+          source</a>
+      </p>
+    </div>
+  </footer>
+</body>
+
+</html>

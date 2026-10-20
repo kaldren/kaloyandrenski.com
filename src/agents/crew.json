@@ -1,0 +1,108 @@
+[
+  {
+    "id": "you",
+    "kind": "human",
+    "name": "Kaloyan",
+    "order": 0,
+    "glyph": "KD",
+    "line": "I set the direction, approve every spec and implementation brief, and decide what ships.",
+    "owns": ["Direction and priorities", "Spec and brief approvals", "The final say on what ships"],
+    "replay": "Asked for a page that introduces the crew."
+  },
+  {
+    "id": "build-feature",
+    "kind": "skill",
+    "lane": "feature",
+    "order": 1,
+    "glyph": "BF",
+    "line": "I run a feature end to end: classify the request, get a spec, write the implementation brief, hand it to the right implementer, then verify the result.",
+    "owns": ["The feature delivery pipeline", "Implementation briefs", "Verification against acceptance criteria"],
+    "replay": "Classified it as a feature spanning frontend and devops. Calling spec-writer."
+  },
+  {
+    "id": "spec-writer",
+    "kind": "agent",
+    "lane": "feature",
+    "order": 2,
+    "glyph": "SW",
+    "line": "I turn a feature request into one numbered spec in specs/. Nobody writes code until I have.",
+    "owns": ["specs/"],
+    "replay": "Wrote specs/8-agents-page.md and specs/9-agents-page-build.md."
+  },
+  {
+    "id": "frontend-developer",
+    "kind": "agent",
+    "lane": "feature",
+    "order": 3,
+    "glyph": "FE",
+    "line": "I build what the spec describes under src/, in plain HTML, CSS and vanilla JS, strictly by DESIGN_SYSTEM.md.",
+    "owns": ["src/ markup, styles and scripts", "DESIGN_SYSTEM.md extensions"],
+    "replay": "Built the agents template, agents.css and agents.js."
+  },
+  {
+    "id": "devops",
+    "kind": "agent",
+    "lane": "feature",
+    "order": 3,
+    "glyph": "DO",
+    "line": "I keep the pipeline running: GitHub Actions workflows, GitHub Pages publishing, the CNAME and the build script. I stay out of src/.",
+    "owns": [".github/workflows/", "CNAME", "scripts/build-blog.mjs"],
+    "replay": "Taught the build to generate /agents/ from the definitions in .claude/."
+  },
+  {
+    "id": "ui-qa",
+    "kind": "agent",
+    "lane": "feature",
+    "order": 4,
+    "glyph": "QA",
+    "line": "I test browser-visible changes on the locally served site with Playwright, at desktop and phone sizes. I report; I never edit files.",
+    "owns": ["Local UI QA reports"],
+    "replay": "Tested the page at desktop and phone sizes and filed a report."
+  },
+  {
+    "id": "update-changelog",
+    "kind": "skill",
+    "lane": "feature",
+    "order": 5,
+    "glyph": "CL",
+    "line": "I add a dated entry to CHANGELOG.md for every shipped feature, filed under Added, Changed or Removed.",
+    "owns": ["CHANGELOG.md"],
+    "replay": "Logged the Agents page under Added in CHANGELOG.md."
+  },
+  {
+    "id": "blog-writer",
+    "kind": "agent",
+    "lane": "content",
+    "order": 1,
+    "glyph": "BW",
+    "line": "I draft and edit posts in Kaloyan's voice as markdown in src/blog/posts/, and I never invent experiences or results.",
+    "owns": ["src/blog/posts/", "src/public/blog/"]
+  },
+  {
+    "id": "seo-review",
+    "kind": "skill",
+    "lane": "content",
+    "order": 2,
+    "glyph": "SEO",
+    "line": "I check a post's on-page SEO (title, summary, slug, headings, links and alt text) and suggest fixes. I only apply them when asked.",
+    "owns": ["SEO findings and suggested fixes for posts"]
+  },
+  {
+    "id": "build-spec",
+    "kind": "skill",
+    "lane": "support",
+    "order": 1,
+    "glyph": "BS",
+    "line": "I'm the conversational front door to spec-writer: I gather your request, relay its questions and iterate until the spec is final. I don't build.",
+    "owns": ["Interactive spec drafting"]
+  },
+  {
+    "id": "ui-qa",
+    "kind": "skill",
+    "lane": "support",
+    "order": 2,
+    "glyph": "/QA",
+    "line": "I hand a page or feature scope to the ui-qa agent and pass its report back to you unchanged.",
+    "owns": ["The /ui-qa command"]
+  }
+]
