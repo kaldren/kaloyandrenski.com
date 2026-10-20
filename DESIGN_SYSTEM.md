@@ -43,6 +43,7 @@ Not part of the brand palette but required for a readable content site. Keep the
 
 - Links and interactive text: `--color-accent` (Blue Green), underlined or otherwise distinguished from body text since its contrast alone doesn't meet AA for small text.
 - Primary buttons: `--color-primary` background, `--color-text-on-dark` text. Hover: darken slightly or switch to `--color-accent`.
+- Buttons on dark backgrounds (`--color-primary` panels): `--color-secondary` background, `--color-primary` text (~7.7:1). Hover: `--color-text-on-dark` background. Use this instead of a second amber CTA when the page already has one.
 - Call-to-action / highlight buttons (used sparingly, e.g. one primary CTA per page): `--color-accent-warm` background, `--color-primary` text. Hover: `--color-accent-warm-strong`.
 - Section backgrounds alternate between `--color-bg` and `--color-bg-subtle` or `--color-secondary` at low usage for visual rhythm — never stack more than one saturated brand color as a full-bleed background per screen.
 - Dark sections (hero, footer): `--color-primary` background with `--color-text-on-dark` text and `--color-secondary` or `--color-accent-warm` for accents/links on top of it.
@@ -68,6 +69,30 @@ Rules:
 - Use these tokens only inside code surfaces (`pre`/`code`). They aren't general-purpose UI colors.
 - Inline code uses the same `--color-code-bg`/`--color-code-text` pair as code blocks, as a small `--radius-sm` pill.
 - Comments are intentionally the lowest-contrast syntax color, but never below 4.5:1.
+
+### Dark showcase surface (`/agents/` page only)
+
+The `/agents/` page (`specs/8-agents-page.md`) is a dark "mission control" console. It is an **explicit, page-scoped exception** to the "code tokens only inside code surfaces" rule above. It applies to that page's `main` content only; the shared header and footer stay as they are everywhere else. No new hex values are introduced.
+
+- **Surface:** `--color-code-bg` is the page background, `--color-code-text` the default text, and `--color-code-border` the edge color for panels and connectors.
+- **Accents:** the syntax tokens may be used as accents (borders, glyphs, kind labels, highlighted connectors). `--color-syntax-comment` is the muted text color on this surface. `--font-mono` may be used for labels (kind labels, glyphs, status line, console).
+- **Node kinds:** agents are solid cards (`--color-primary` fill, `--color-accent` border). Skills are outlined chips (transparent fill, `--color-syntax-type` border). The human node's accent is `--color-accent-warm`. Every node also carries a text kind label, so kind never relies on shape or color alone.
+- **Contrast:** only these text/background pairings are used. All meet 4.5:1 (WCAG 2.x):
+
+  | Text | Background | Ratio |
+  |---|---|---|
+  | `--color-code-text` | `--color-code-bg` | 14.61:1 |
+  | `--color-syntax-comment` | `--color-code-bg` | 5.20:1 |
+  | `--color-syntax-function` (links) | `--color-code-bg` | 8.14:1 |
+  | `--color-syntax-type` / `--color-accent-warm` | `--color-code-bg` | 11.42:1 / 9.83:1 |
+  | `--color-code-text` | `--color-primary` | 11.79:1 |
+  | `--color-syntax-keyword` | `--color-primary` | 7.74:1 |
+  | `--color-code-text` | `--color-code-border` | 8.16:1 |
+  | `--color-code-bg` | `--color-syntax-keyword` / `--color-syntax-type` | 9.60:1 / 11.42:1 |
+  | `--color-primary` | `--color-accent-warm` | 7.93:1 |
+
+  `--color-syntax-comment` is not used on `--color-primary` or `--color-code-border` (below 4.5:1). The focus ring stays `--color-accent` (5.46:1 on `--color-code-bg`, 4.41:1 on `--color-primary`, both above the 3:1 UI minimum).
+- **Sanctioned motion (this page only):** exactly three effects are allowed beyond simple color fades: a slow **status-dot pulse** (opacity), a blinking **typing caret** in the console, and the **replay highlight** (nodes and connectors lighting step by step). Under `prefers-reduced-motion: reduce` all three are off: the dot and caret are static, console lines appear instantly, and the replay never autoplays (it becomes a manual "Next step" control).
 
 ### CSS custom properties
 
@@ -187,7 +212,7 @@ Max content width: `72rem` (1152px), centered, with `--space-4`–`--space-6` ho
 
 - Focus: visible focus ring on all interactive elements using `--color-accent` (`outline: 2px solid var(--color-accent); outline-offset: 2px;`) — never remove focus outlines without replacing them.
 - Hover on links/buttons: shift toward the adjacent brand shade (e.g. `--color-accent` → darker, `--color-accent-warm` → `--color-accent-warm-strong`), not an unrelated color.
-- Transitions: short and subtle, `150–200ms ease`, on color/background/transform only. No animation for its own sake.
+- Transitions: short and subtle, `150–200ms ease`, on color/background/transform only. No animation for its own sake. The only sanctioned exception is the `/agents/` page's motion listed under "Dark showcase surface".
 
 ## Accessibility
 

@@ -1,0 +1,590 @@
+/* ==========================================================================
+   Agents page (spec: specs/8-agents-page.md)
+   Loaded after styles.css, which provides the design tokens, base styles,
+   header/nav, and footer. Tokens only, no hex values. The dark surface and
+   the three motion effects are sanctioned by DESIGN_SYSTEM.md,
+   "Dark showcase surface".
+   ========================================================================== */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Page surface ---------- */
+
+.agents-main {
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  padding-block: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .agents-main {
+    padding-block: var(--space-16);
+  }
+}
+
+.agents-main a {
+  color: var(--color-syntax-function);
+}
+
+.agents-main a:hover {
+  color: var(--color-syntax-keyword);
+}
+
+/* Grid: header, then the BUILD:crew elements (status, lanes, support), then
+   the console. One column on mobile; console beside the lanes from lg up. */
+.agents {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-6);
+}
+
+@media (min-width: 1024px) {
+  .agents {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 2fr);
+    column-gap: var(--space-8);
+  }
+
+  .agents > * {
+    grid-column: 1;
+  }
+
+  .agents > .agents__header {
+    grid-column: 1 / -1;
+  }
+
+  .agents > .console {
+    grid-column: 2;
+    grid-row: 2 / span 4;
+    align-self: start;
+    position: sticky;
+    top: var(--space-24);
+  }
+}
+
+/* ---------- Header ---------- */
+
+.agents__back {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  margin-bottom: var(--space-4);
+}
+
+.agents__back a {
+  text-decoration: none;
+}
+
+.agents__back a:hover {
+  text-decoration: underline;
+}
+
+.agents__title {
+  font-size: var(--text-2xl);
+  color: var(--color-code-text);
+  margin-bottom: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .agents__title {
+    font-size: var(--text-3xl);
+  }
+}
+
+.agents__intro {
+  max-width: 70ch;
+  font-size: var(--text-lg);
+}
+
+.agents__controls {
+  margin-top: var(--space-6);
+}
+
+.replay-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-syntax-function);
+  background-color: transparent;
+  border: 1px solid var(--color-syntax-function);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease;
+}
+
+.replay-button::before {
+  content: "\25B6";
+  content: "\25B6" / "";
+}
+
+.replay-button[data-state="running"]::before {
+  content: "\25A0";
+  content: "\25A0" / "";
+}
+
+.replay-button:hover {
+  color: var(--color-code-text);
+  background-color: var(--color-code-border);
+}
+
+.replay-button[hidden],
+.console__js-hint[hidden] {
+  display: none;
+}
+
+/* ---------- Status line ---------- */
+
+.crew-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-code-text);
+}
+
+.crew-status__dot {
+  flex-shrink: 0;
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 50%;
+  background-color: var(--color-syntax-type);
+  animation: crew-pulse 2s ease-in-out infinite;
+}
+
+@keyframes crew-pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* ---------- Lanes ---------- */
+
+.lane,
+.crew-support {
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.lane__title {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-syntax-comment);
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+/* Mobile: steps stack vertically, vertical connectors between them. */
+.lane__steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lane__step {
+  position: relative;
+}
+
+.lane__step--branch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.lane__step + .lane__step::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 2px;
+  height: var(--space-6);
+  transform: translateX(-50%);
+  background-color: var(--color-code-border);
+  transition: background-color 200ms ease;
+}
+
+.lane__step.is-lit::before {
+  background-color: var(--color-syntax-function);
+}
+
+/* md+: steps run left to right, horizontal connectors. */
+@media (min-width: 768px) {
+  .lane__steps {
+    flex-direction: row;
+    gap: var(--space-4);
+  }
+
+  .lane__step {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
+  }
+
+  .lane__step--branch {
+    display: flex;
+  }
+
+  .lane__step + .lane__step::before {
+    bottom: auto;
+    left: auto;
+    top: 50%;
+    right: 100%;
+    width: var(--space-4);
+    height: 2px;
+    transform: translateY(-50%);
+  }
+}
+
+/* ---------- Support row ---------- */
+
+.crew-support__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.crew-support__item {
+  flex: 1 1 auto;
+}
+
+@media (min-width: 640px) {
+  .crew-support__item {
+    flex: 0 1 auto;
+  }
+}
+
+/* ---------- Nodes ---------- */
+
+.node {
+  position: relative;
+  scroll-margin-top: var(--space-24); /* keep focused nodes clear of the sticky header */
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "glyph name"
+    "glyph kind";
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  text-align: left;
+  color: var(--color-code-text);
+  background-color: transparent;
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.node__glyph {
+  grid-area: glyph;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--space-8);
+  height: var(--space-8);
+  padding-inline: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+}
+
+.node__name {
+  grid-area: name;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: break-word;
+}
+
+.node__kind {
+  grid-area: kind;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+/* Agents: solid cards. */
+.node--agent {
+  background-color: var(--color-primary);
+  border-color: var(--color-accent);
+}
+
+.node--agent .node__glyph {
+  background-color: var(--color-syntax-keyword);
+  color: var(--color-code-bg);
+}
+
+.node--agent .node__kind {
+  color: var(--color-syntax-keyword);
+}
+
+/* Skills: outlined chips. */
+.node--skill {
+  border-color: var(--color-syntax-type);
+  border-radius: var(--radius-sm);
+}
+
+.node--skill .node__glyph {
+  border: 1px solid var(--color-syntax-type);
+  color: var(--color-syntax-type);
+}
+
+.node--skill .node__kind {
+  color: var(--color-syntax-type);
+}
+
+/* The human: warm amber accent. */
+.node--human {
+  border-color: var(--color-accent-warm);
+}
+
+.node--human .node__glyph {
+  background-color: var(--color-accent-warm);
+  color: var(--color-primary);
+}
+
+.node--human .node__kind {
+  color: var(--color-accent-warm);
+}
+
+/* Stacked glyph / name / kind: branch nodes always (they sit side by side on
+   mobile), every lane node from md up. */
+.lane__step--branch .node {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "glyph"
+    "name"
+    "kind";
+  justify-items: center;
+  row-gap: var(--space-1);
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .lane__steps .node {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "glyph"
+      "name"
+      "kind";
+    justify-items: center;
+    row-gap: var(--space-1);
+    padding: var(--space-3) var(--space-2);
+    text-align: center;
+  }
+}
+
+/* Selected: a bar along the bottom edge and an underlined name, not color alone. */
+.node[aria-pressed="true"] .node__name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: var(--space-1);
+}
+
+.node[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  left: var(--space-2);
+  right: var(--space-2);
+  bottom: 0;
+  height: var(--space-1);
+  background-color: currentColor;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+/* Replay highlight. */
+.node.is-lit {
+  background-color: var(--color-code-border);
+  border-color: var(--color-syntax-function);
+}
+
+.node--human.is-lit {
+  border-color: var(--color-accent-warm);
+}
+
+/* ---------- Console ---------- */
+
+.console {
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.console__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-4);
+  background-color: var(--color-code-border);
+}
+
+.console__lights {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.console__lights span {
+  width: var(--space-2);
+  height: var(--space-2);
+  border-radius: 50%;
+  background-color: var(--color-syntax-comment);
+}
+
+.console__title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-code-text);
+}
+
+.console__body {
+  min-height: calc(var(--space-24) * 3);
+  padding: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+.console__body p + p,
+.console__intro > * + * {
+  margin-top: var(--space-3);
+}
+
+.console__prompt {
+  color: var(--color-syntax-function);
+}
+
+.console__who {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.console__glyph {
+  padding-inline: var(--space-1);
+  font-weight: 700;
+  color: var(--color-code-bg);
+  background-color: var(--color-syntax-keyword);
+  border-radius: var(--radius-sm);
+}
+
+.console__who--human .console__glyph {
+  color: var(--color-primary);
+  background-color: var(--color-accent-warm);
+}
+
+.console__who--skill .console__glyph {
+  background-color: var(--color-syntax-type);
+}
+
+.console__name {
+  font-weight: 700;
+}
+
+.console__kind {
+  color: var(--color-syntax-comment);
+}
+
+.console__line {
+  color: var(--color-code-text);
+}
+
+.console__line::before {
+  content: "> ";
+  content: "> " / "";
+  color: var(--color-syntax-function);
+}
+
+.console__caret {
+  display: inline-block;
+  width: var(--space-2);
+  height: var(--text-sm);
+  margin-left: var(--space-1);
+  vertical-align: text-bottom;
+  background-color: var(--color-code-text);
+  animation: crew-caret 1s steps(1) infinite;
+}
+
+@keyframes crew-caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+.console__meta {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-code-border);
+}
+
+.console__meta dt {
+  color: var(--color-syntax-comment);
+}
+
+.console__owns li::before {
+  content: "- ";
+  content: "- " / "";
+  color: var(--color-syntax-comment);
+}
+
+.console__log {
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.console__log li + li {
+  margin-top: var(--space-2);
+}
+
+.console__log-who {
+  font-weight: 700;
+  color: var(--color-syntax-keyword);
+}
+
+.console__log-who--human {
+  color: var(--color-accent-warm);
+}
+
+.console__log-who--skill {
+  color: var(--color-syntax-type);
+}
+
+.console__log-end {
+  color: var(--color-syntax-comment);
+}
+
+/* ---------- Reduced motion: no pulse, no caret blink ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .crew-status__dot,
+  .console__caret {
+    animation: none;
+  }
+}

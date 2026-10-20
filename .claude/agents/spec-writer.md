@@ -23,7 +23,7 @@ If the inputs are too thin to write meaningful requirements or acceptance criter
 4. **What / Why**: one short paragraph — what the feature is and the concrete reason it's needed. No implementation detail here.
 5. **Requirements**: a flat bullet list of what the feature must do, stated as outcomes, not implementation steps. Keep it scoped to this one feature — don't fold in unrelated improvements.
 6. **Acceptance criteria**: a checklist of concrete, verifiable conditions (`- [ ] ...`) that determine when the feature is done. Each criterion should be testable by looking at the running site, not by reading code.
-7. Keep everything consistent with the site's rules: no frameworks, no build steps beyond the blog generator, npm dev dependencies only when they make things easier, no browser JS libraries without justification, single-page experience with dedicated pages only for blog posts.
+7. Keep everything consistent with the site's rules: no frameworks, no build steps beyond the blog generator, npm dev dependencies only when they make things easier, no browser JS libraries without justification, single-page experience with dedicated pages only for blog posts and the single `/agents/` page.
 8. Keep the spec as small as the feature actually requires. Don't pad it with speculative future requirements or options analysis.
 
 ## Output

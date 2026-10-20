@@ -2,6 +2,12 @@
 
 All notable changes to kaloyandrenski.com are documented in this file. Entries are grouped by date, newest first, and cover feature-level additions and changes — not every commit.
 
+## 2026-10-20
+
+### Added
+- **Agents page** — a new `/agents/` "mission control" page, linked from the end of the About section and the footer's "built with human + AI collaboration" line, shows the AI agents and skills that build this site in a Feature lane and a Content lane. Hover, focus or tap an agent and it introduces itself in a console with what it does, its real tools and model, and a link to its definition, while "Run build-feature" replays a feature moving through the pipeline. ([spec](specs/8-agents-page.md))
+- **Agents page build** — the agents page is generated from the real agent and skill definitions on every deploy, so it never drifts from how the site is actually built. A new agent shows up automatically, and a persona pointing at an agent that doesn't exist stops the deploy. ([spec](specs/9-agents-page-build.md))
+
 ## 2026-10-18
 
 ### Added
