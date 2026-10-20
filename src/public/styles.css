@@ -214,6 +214,11 @@ a:hover {
   font-weight: 700;
   font-size: var(--text-lg);
   color: var(--color-primary);
+  text-decoration: none;
+}
+
+.site-mark:hover {
+  color: var(--color-accent);
 }
 
 .nav-list {
