@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Agents page (spec: specs/8-agents-page.md)
+   Agents page
    Loaded after styles.css, which provides the design tokens, base styles,
    header/nav, and footer. Tokens only, no hex values. The dark surface and
    the three motion effects are sanctioned by DESIGN_SYSTEM.md,

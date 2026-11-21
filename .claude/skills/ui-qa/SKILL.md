@@ -4,7 +4,7 @@ description: Run local browser QA for a browser-visible feature through the repo
 argument-hint: [feature or page scope]
 ---
 
-Delegate to the `ui-qa` agent with the supplied scope, relevant spec, and acceptance criteria. If no scope is supplied, use the home page (`/`).
+Delegate to the `ui-qa` agent with the supplied scope and any acceptance criteria. If no scope is supplied, use the home page (`/`).
 
 The agent first decides whether the change is browser-visible:
 

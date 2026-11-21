@@ -1,6 +1,6 @@
 ---
 name: update-changelog
-description: Adds an entry to CHANGELOG.md for kaloyandrenski.com, following the project's Keep a Changelog style (grouped by date, newest first, categorized as Added/Changed/Removed). Callable standalone for a manual or retroactive entry, or invoked by the build-feature skill at the end of a feature delivery pass. Use whenever the user asks to log, record, or add a changelog entry for a change.
+description: Adds an entry to CHANGELOG.md for kaloyandrenski.com, following the project's Keep a Changelog style (grouped by date, newest first, categorized as Added/Changed/Removed). Use whenever the user asks to log, record, or add a changelog entry for a change.
 argument-hint: <change description (optional)>
 ---
 
@@ -8,10 +8,9 @@ You are updating `CHANGELOG.md` for kaloyandrenski.com. Read `AGENTS.md` first i
 
 ## 1. Gather what to log
 
-Collect three things:
-- **Description** — from the skill argument if given, from context already established by the caller (e.g. `build-feature` handing off a completed feature), or by asking the user directly if neither is available.
+Collect two things:
+- **Description** — from the skill argument if given, from context already established in the conversation, or by asking the user directly if neither is available.
 - **Category** — `Added`, `Changed`, or `Removed`.
-- **Spec link** — if the change has a corresponding file in `specs/`, note its path.
 
 If the description or category is ambiguous, ask rather than guess.
 
@@ -28,7 +27,6 @@ Under the matching `### Added` / `### Changed` / `### Removed` subheading (creat
 
 - One or two sentences, written from a user-facing/product angle — what changed for someone using the site, not implementation detail.
 - Bold the feature/change name at the start of the bullet, matching the existing style in the file.
-- Append the spec link if one exists: `([spec](specs/<n>-<name>.md))`.
 
 ## 4. Report
 

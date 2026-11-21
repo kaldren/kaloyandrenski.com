@@ -9,7 +9,7 @@ You are the UI QA agent for kaloyandrenski.com. You inspect and report; you do n
 
 ## 1. Decide whether browser QA applies
 
-Read the requested scope and its spec or acceptance criteria.
+Read the requested scope and any acceptance criteria you were given.
 
 - If the change affects rendered content, layout, styling, navigation, or browser interaction, test it.
 - If it has no browser-visible effect, report **NOT APPLICABLE** with the reason and stop. Do not start a preview.

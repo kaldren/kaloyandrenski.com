@@ -1,6 +1,6 @@
 # Design System
 
-The single source of truth for the visual language of kaloyandrenski.com. Every UI implementation must follow this document. If a spec under `specs/` conflicts with this file on visual details (color, type, spacing), this file wins unless the spec explicitly overrides it for a stated reason.
+The single source of truth for the visual language of kaloyandrenski.com. Every UI implementation must follow this document. If a request conflicts with this file on visual details (color, type, spacing), this file wins unless the change deliberately updates it.
 
 This site is a minimal, fast, content-focused professional portfolio. Every choice below optimizes for clarity and performance over decoration — plain CSS3, no preprocessors, no external font/icon services, no runtime JS libraries; the only build step is the blog generator described in `AGENTS.md`.
 
@@ -72,7 +72,7 @@ Rules:
 
 ### Dark showcase surface (`/agents/` page only)
 
-The `/agents/` page (`specs/8-agents-page.md`) is a dark "mission control" console. It is an **explicit, page-scoped exception** to the "code tokens only inside code surfaces" rule above. It applies to that page's `main` content only; the shared header and footer stay as they are everywhere else. No new hex values are introduced.
+The `/agents/` page is a dark "mission control" console. It is an **explicit, page-scoped exception** to the "code tokens only inside code surfaces" rule above. It applies to that page's `main` content only; the shared header and footer stay as they are everywhere else. No new hex values are introduced.
 
 - **Surface:** `--color-code-bg` is the page background, `--color-code-text` the default text, and `--color-code-border` the edge color for panels and connectors.
 - **Accents:** the syntax tokens may be used as accents (borders, glyphs, kind labels, highlighted connectors). `--color-syntax-comment` is the muted text color on this surface. `--font-mono` may be used for labels (kind labels, glyphs, status line, console).

@@ -1,7 +1,7 @@
-// Agents page behaviour (spec: specs/8-agents-page.md).
+// Agents page behaviour.
 // Reads the #crew-data block written by the build (or the sample in
 // src/agents/template.html) and drives node selection, the console, and the
-// build-feature replay. No libraries.
+// feature-lane replay. No libraries.
 
 const TYPE_DELAY = 18;
 const STEP_DELAY = 1800;
@@ -163,7 +163,7 @@ function updateButton() {
     replayButton.textContent = 'Stop replay';
     replayButton.dataset.state = 'running';
   } else {
-    replayButton.textContent = 'Run build-feature';
+    replayButton.textContent = 'Run the feature lane';
     delete replayButton.dataset.state;
   }
 }
@@ -177,7 +177,7 @@ function beginReplay() {
   clearSelection();
   clearHighlight();
   const wrap = el('div', 'console__entry');
-  wrap.append(el('p', 'console__prompt', '$ run build-feature'));
+  wrap.append(el('p', 'console__prompt', '$ run feature-lane'));
   replay.log = el('ol', 'console__log');
   wrap.append(replay.log);
   consoleBody.replaceChildren(wrap);
@@ -219,7 +219,7 @@ function runNext() {
     replay.timer = setTimeout(runNext, STEP_DELAY);
   } else {
     replay.timer = setTimeout(() => {
-      logEnd('Done. Spec to changelog.');
+      logEnd('Done. Request to changelog.');
       replay.running = false;
       replay.timer = null;
       updateButton();

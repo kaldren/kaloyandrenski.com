@@ -1,12 +1,12 @@
-// Blog build (specs/7-blog-build-pipeline.md).
+// Blog build.
 //
 // Copies the site source into an output folder and turns every markdown post in
 // <src>/blog/posts/<slug>.md into <out>/blog/<slug>.html, plus a newest-first
 // <out>/blog/index.html, using the templates in <src>/blog/templates/ (contract
-// in specs/6-markdown-blog.md). Raw posts and templates are not published.
+// in each template's top comment). Raw posts and templates are not published.
 // Syntax highlighting happens here, so no JS library is shipped to the browser.
 //
-// It also generates the /agents/ page (specs/9-agents-page-build.md): the agent and
+// It also generates the /agents/ page: the agent and
 // skill definitions in <repo>/.claude/ are merged with the personas in
 // <src>/agents/crew.json and filled into <src>/agents/template.html (contract in that
 // template's top comment), written to <out>/agents/index.html. <repo> is the parent

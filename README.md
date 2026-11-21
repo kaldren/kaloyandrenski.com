@@ -6,18 +6,11 @@ The goal is to build a minimal, fast, and content-focused website that showcases
 
 The website is a single-page experience, with dedicated pages only for blog posts.
 
-This project follows a **Specs-First Development** approach, where specifications are written before implementation.
-
 ---
 
-## Building a Feature
+## Development
 
-There are two ways to build a feature or change on this site:
-
-1. **Manual**: ask the `spec-writer` agent to write a spec in `specs/`, then ask the `frontend-developer` agent to implement it against that spec.
-2. **`build-feature` skill**: run `/build-feature <description>` to drive the whole pipeline in one go — it classifies the request, delegates to `spec-writer` when a spec is needed, builds an implementation brief, hands off to the matching implementer, and runs browser QA for rendered-site work before completion.
-
-Either way, no code is implemented without a spec in `specs/` (see `AGENTS.md`).
+This is a solo project, built iteratively with AI coding agents. The optional helper agents and skills are described in `AGENTS.md`.
 
 ### UI QA
 
@@ -39,8 +32,8 @@ With no scope, Claude Code UI QA checks the home page; provide a changed page or
 ```text
 kaloyandrenski.com/
 ├── .claude/             # Claude Code configuration for this repo
-│   ├── agents/          # Agent definitions (spec-writer, frontend-developer, devops, ui-qa)
-│   └── skills/          # Skill definitions (build-feature, build-spec, ui-qa, update-changelog)
+│   ├── agents/          # Agent definitions (frontend-developer, devops, ui-qa, blog-writer)
+│   └── skills/          # Skill definitions (ui-qa, update-changelog, seo-review)
 ├── .vscode/
 │   └── mcp.json         # Workspace-local Playwright MCP configuration
 ├── .mcp.json            # Project-scoped Playwright MCP configuration for Claude Code
@@ -49,8 +42,6 @@ kaloyandrenski.com/
 │   ├── index.html       # Single-page site entry point
 │   ├── blog/            # Blog posts (markdown) and page templates
 │   └── public/          # Static assets served as-is (images, styles.css, etc.)
-├── specs/               # Feature specifications (one file per feature)
-│   └── TEMPLATE.md      # Spec format for new features
 ├── AGENTS.md            # Goals, tech stack, and rules for AI agents
 ├── DESIGN_SYSTEM.md     # Source of truth for colors, type, spacing, shape
 └── README.md
