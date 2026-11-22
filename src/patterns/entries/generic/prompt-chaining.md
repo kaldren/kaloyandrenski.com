@@ -4,7 +4,7 @@ aliases: Sequential workflow, LLM pipeline
 category: Orchestration
 order: 1
 summary: Split a task into a fixed sequence of model calls, where each step works on the output of the one before and plain code checks the result between steps.
-figure: Three model calls run in a fixed order. A code gate after the first step stops the chain before a bad outline turns into a bad draft.
+figure: Three model calls run in a fixed order, with a code gate between each pair of steps. A failed gate stops the chain at the step that went wrong, so a bad outline never becomes a draft and a bad draft never gets polished.
 caution: Errors add up along a chain. A small mistake in step one becomes the input to every step after it, so put a cheap check after the steps that matter most and stop early instead of letting the chain polish a wrong answer.
 related: [orchestrator-workers, evaluator-optimizer, retrieval-augmented-generation]
 ---
@@ -35,7 +35,7 @@ You can also give each step the cheapest model that does the job well. The extra
 
 1. Write down the stages the task already has. If you can't name them, this isn't the right pattern.
 2. Give each stage its own prompt with a clear input and output format.
-3. After the steps that matter most, add a gate in code. It can be a schema check, a length limit or a keyword test.
+3. Between steps, add a gate in code that checks the output before the next step sees it. It can be a schema check, a length limit or a keyword test.
 4. When a gate fails, stop or retry that step. Don't pass bad output down the line.
 5. Log each step's input and output, so a bad result can be traced to the step that caused it.
 
@@ -51,5 +51,11 @@ def write_article(topic: str) -> str:
         raise ChainStopped("outline step returned %d points" % len(points))
 
     draft = call_model("Write an article from this outline:\n" + outline)
+
+    # Gate: catch a thin draft before the polish step hides it.
+    words = len(draft.split())
+    if words < 400:
+        raise ChainStopped("draft step returned %d words" % words)
+
     return call_model("Tighten this draft. Keep the facts:\n" + draft)
 ```
