@@ -94,6 +94,30 @@ The `/agents/` page is a dark "mission control" console. It is an **explicit, pa
   `--color-syntax-comment` is not used on `--color-primary` or `--color-code-border` (below 4.5:1). The focus ring stays `--color-accent` (5.46:1 on `--color-code-bg`, 4.41:1 on `--color-primary`, both above the 3:1 UI minimum).
 - **Sanctioned motion (this page only):** exactly three effects are allowed beyond simple color fades: a slow **status-dot pulse** (opacity), a blinking **typing caret** in the console, and the **replay highlight** (nodes and connectors lighting step by step). Under `prefers-reduced-motion: reduce` all three are off: the dot and caret are static, console lines appear instantly, and the replay never autoplays (it becomes a manual "Next step" control).
 
+### Pattern diagrams (`/patterns/` page)
+
+Each entry on the `/patterns/` page has a hand-written inline SVG diagram. Diagrams sit on the normal light surface (`--color-bg` canvas with a `1px solid var(--color-border)` frame, `--radius-md`). The SVG files carry **classes only, never colors or inline styles**: `patterns.css` maps the classes to the tokens below, and the build rejects any color or `style` attribute in a diagram. No new hex values are introduced.
+
+- **Node kinds** (`<g class="node node--{kind}">` with a `rect` and `text`):
+
+  | Kind | Fill | Edge | Text | Text contrast |
+  |---|---|---|---|---|
+  | `agent` | `--color-primary` | none | `--color-text-on-dark` | 13.11:1 |
+  | `model` (a model call) | `--color-secondary` | none | `--color-primary` | 7.74:1 |
+  | `tool` | `--color-bg` | 2px `--color-accent` (3.14:1) | `--color-primary` | 13.85:1 |
+  | `store` (memory, rubric, data) | `--color-bg-subtle` | 1px `--color-text-muted` (5.21:1) | `--color-text` | 14.72:1 |
+  | `check` (gate, evaluator verdict) | `--color-accent-warm` | none | `--color-primary` | 7.93:1 |
+  | `human` | `--color-bg` | 2px `--color-primary` (13.85:1) | `--color-primary` | 13.85:1 |
+  | `io` (input or output) | `--color-bg` | 1px `--color-text-muted` (5.5:1) | `--color-primary` | 13.85:1 |
+
+- **Boundaries (cloud diagrams):** `<g class="zone">` draws a boundary such as a subscription, virtual network or hosting environment: a `--color-bg-subtle` fill with a 1px `--color-border` edge, drawn behind the nodes. A boundary nested inside another adds `zone--inner`, which switches the fill to `--color-bg` so the nesting reads. Its `zone-label` is `--font-mono` at `--text-xs` in `--color-text-muted` (5.21:1 on `--color-bg-subtle`), top-left inside the box. Boundaries are never dashed, because dashed means optional flow.
+- **Edges:** `edge` is 1.5px `--color-text-muted`; `edge--main` (the pattern's main path) is 2.5px `--color-accent`; `edge--optional` (optional, delayed or failure flow) is a dashed `--color-text-muted` line. Arrowheads match their edge. Edge labels (`edge-label`) are `--color-text-muted` at `--text-xs` (5.5:1 on the canvas).
+- **Type:** node labels use `--font-sans` at `--text-sm`, weight 700; node subtitles (`node-sub`) use `--text-xs`, weight 400. Below 768px diagrams render at their natural size (the build sets `width`/`height` from the `viewBox`) and scroll horizontally inside their frame, so their text never shrinks; from 768px they scale to the frame's width.
+- **Never color alone:** every node has a text label, the legend on the page names every kind and edge style, and the figure caption says what the diagram shows.
+- **Tracks:** the page is split into tracks: the generic patterns, then one per cloud. Each track opens with a dark header band (`--color-primary` with `--radius-md`). It shows the group label (e.g. "Cloud") in `--font-mono` `--text-xs` `--color-accent-warm` (7.93:1), the track name as the h2 in `--color-text-on-dark`, and its description and count in `--color-secondary` (7.74:1). In the sidebar, tracks are separated by a 1px `--color-border` rule, and their categories are indented behind a 2px `--color-border` line. Small labels there use `--color-text-muted`, never `--color-accent`.
+- **Cloud entries** add a provider tag (`--color-primary` fill, `--color-text-on-dark` text, 13.11:1) before the category tag. Their services table reuses the blog table style, with service names as `--color-primary` row headers.
+- **Rest of the page:** category and related-pattern chips are tags (`--radius-sm`, `--font-mono`, `--text-xs`). The "Be careful" callout is `--color-bg-subtle` with a 4px `--color-accent-warm` left border and a `--color-primary` heading. The hero is a dark section like the homepage hero.
+
 ### CSS custom properties
 
 Define these once (e.g. in a root stylesheet) and reference them everywhere — no hardcoded hex values in component CSS.

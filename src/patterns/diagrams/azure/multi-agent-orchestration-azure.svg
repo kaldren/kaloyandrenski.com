@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 430" role="img" aria-labelledby="multi-agent-orchestration-azure-title">
+  <title id="multi-agent-orchestration-azure-title">Multi-agent orchestration on Azure: a user submits a task through App Service; an orchestrator agent on Azure Container Apps fans it out to three worker agents, which call Foundry models through API Management, while the orchestrator saves plans and state in Cosmos DB.</title>
+  <defs>
+    <marker id="multi-agent-orchestration-azure-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="multi-agent-orchestration-azure-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="zone"><rect x="120" y="10" width="560" height="410" rx="8"/><text class="zone-label" x="130" y="20">Azure subscription</text></g>
+  <g class="zone zone--inner"><rect x="262" y="40" width="242" height="290" rx="8"/><text class="zone-label" x="272" y="50">Container Apps</text></g>
+
+  <g class="node node--human"><rect x="14" y="163" width="84" height="44" rx="8"/><text class="node-label" x="56" y="185">User</text></g>
+  <g class="node node--io"><rect x="140" y="155" width="100" height="60" rx="8"/><text class="node-label" x="190" y="176">App Service</text><text class="node-sub" x="190" y="196">front end</text></g>
+  <g class="node node--agent"><rect x="276" y="145" width="104" height="80" rx="8"/><text class="node-label" x="328" y="175">Orchestrator</text><text class="node-sub" x="328" y="197">plan · combine</text></g>
+  <g class="node node--agent"><rect x="410" y="60" width="80" height="50" rx="8"/><text class="node-label" x="450" y="76">Worker A</text><text class="node-sub" x="450" y="96">research</text></g>
+  <g class="node node--agent"><rect x="410" y="160" width="80" height="50" rx="8"/><text class="node-label" x="450" y="176">Worker B</text><text class="node-sub" x="450" y="196">act</text></g>
+  <g class="node node--agent"><rect x="410" y="260" width="80" height="50" rx="8"/><text class="node-label" x="450" y="276">Worker C</text><text class="node-sub" x="450" y="296">check</text></g>
+  <g class="node node--model"><rect x="524" y="50" width="136" height="60" rx="8"/><text class="node-label" x="592" y="71">Foundry</text><text class="node-sub" x="592" y="91">model deployments</text></g>
+  <g class="node node--check"><rect x="524" y="155" width="136" height="60" rx="8"/><text class="node-label" x="592" y="176">API Management</text><text class="node-sub" x="592" y="196">AI gateway</text></g>
+  <g class="node node--store"><rect x="268" y="352" width="120" height="48" rx="2"/><text class="node-label" x="328" y="367">Cosmos DB</text><text class="node-sub" x="328" y="387">plans · state</text></g>
+
+  <path class="edge edge--main" d="M98 185 H138" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M240 185 H274" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M380 185 C395 185 393 85 408 85" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M380 185 H408" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M380 185 C395 185 393 285 408 285" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M490 85 C507 85 507 175 522 175" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M490 185 H522" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M490 285 C507 285 507 195 522 195" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M592 155 V112" marker-end="url(#multi-agent-orchestration-azure-arrow-main)"/>
+  <path class="edge" d="M328 225 V350" marker-end="url(#multi-agent-orchestration-azure-arrow)"/>
+
+  <text class="edge-label" x="592" y="236">every model call</text>
+  <text class="edge-label" x="362" y="290">saves state</text>
+</svg>

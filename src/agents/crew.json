@@ -68,6 +68,15 @@
     "owns": ["SEO findings and suggested fixes for posts"]
   },
   {
+    "id": "pattern-entry",
+    "kind": "skill",
+    "lane": "content",
+    "order": 1,
+    "glyph": "PAT",
+    "line": "I add and revise entries on the patterns page, generic patterns and Azure architectures alike: the right track and category, the fixed sections and a diagram in the site's diagram language. If the build complains, the entry doesn't ship.",
+    "owns": ["src/patterns/entries/", "src/patterns/diagrams/"]
+  },
+  {
     "id": "ui-qa",
     "kind": "skill",
     "lane": "support",

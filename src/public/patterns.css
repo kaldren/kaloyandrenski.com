@@ -1,0 +1,740 @@
+/* ==========================================================================
+   Architecture patterns page (/patterns/)
+   Loaded after styles.css (tokens, header, footer) and blog.css (prose, code,
+   tables, active nav item). Tokens only, no hex values: see "Pattern diagrams"
+   in DESIGN_SYSTEM.md.
+   ========================================================================== */
+
+/* ---------- Hero ---------- */
+
+.patterns-hero {
+  padding-block: var(--space-12);
+  background-color: var(--color-primary);
+  color: var(--color-text-on-dark);
+}
+
+@media (min-width: 768px) {
+  .patterns-hero {
+    padding-block: var(--space-16);
+  }
+}
+
+.patterns-hero__eyebrow {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary);
+}
+
+.patterns-hero__title {
+  font-size: var(--text-2xl);
+  color: var(--color-text-on-dark);
+}
+
+@media (min-width: 768px) {
+  .patterns-hero__title {
+    font-size: var(--text-3xl);
+  }
+}
+
+.patterns-hero__lead {
+  max-width: 44rem;
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+  color: var(--color-secondary);
+}
+
+.patterns-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+
+.patterns-stats__item {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.patterns-stats dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secondary);
+}
+
+.patterns-stats dd {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-accent-warm);
+}
+
+/* ---------- Layout: contents sidebar + entries ---------- */
+
+.patterns-layout {
+  display: grid;
+  gap: var(--space-8);
+  padding-block: var(--space-8) var(--space-16);
+}
+
+@media (min-width: 1024px) {
+  .patterns-layout {
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: var(--space-12);
+    padding-block: var(--space-12) var(--space-24);
+  }
+
+  .patterns-sidebar {
+    position: sticky;
+    top: var(--space-24);
+    align-self: start;
+    max-height: calc(100vh - var(--space-24) - var(--space-6));
+    overflow-y: auto;
+  }
+}
+
+.patterns-content {
+  min-width: 0;
+  max-width: 48rem;
+}
+
+/* ---------- Contents ---------- */
+
+.patterns-toc {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-subtle);
+}
+
+.patterns-toc__summary {
+  padding: var(--space-3) var(--space-4);
+  font-weight: 700;
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.patterns-toc__nav {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+@media (min-width: 1024px) {
+  .patterns-toc {
+    border: 0;
+    background-color: transparent;
+  }
+
+  .patterns-toc__summary {
+    padding: 0 0 var(--space-4);
+    cursor: default;
+    list-style: none;
+  }
+
+  .patterns-toc__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .patterns-toc__nav {
+    padding: 0;
+  }
+}
+
+.patterns-filter {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.patterns-filter[hidden] {
+  display: none;
+}
+
+.patterns-filter__label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.patterns-filter__search {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius-sm);
+}
+
+.patterns-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.patterns-toc__tracks,
+.patterns-toc__groups,
+.patterns-toc__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.patterns-toc__track + .patterns-toc__track {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.patterns-toc__track-link {
+  display: block;
+  margin-bottom: var(--space-4);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.patterns-toc__track-link:hover {
+  color: var(--color-accent);
+}
+
+.patterns-toc__group-label {
+  display: block;
+  margin-bottom: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.patterns-toc__groups {
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--color-border);
+}
+
+.patterns-toc__group + .patterns-toc__group {
+  margin-top: var(--space-4);
+}
+
+.patterns-toc__heading {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.patterns-toc__item a {
+  display: flex;
+  gap: var(--space-2);
+  padding-block: var(--space-1);
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.patterns-toc__item a:hover {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.patterns-toc__number {
+  flex: none;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* ---------- Chips (tags) ---------- */
+
+.pattern-chip {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  color: var(--color-primary);
+  text-decoration: none;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.pattern-chip:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
+}
+
+.pattern-chip[aria-pressed="true"] {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-text-on-dark);
+}
+
+/* ---------- Guide: how to read an entry ---------- */
+
+.patterns-guide {
+  padding-bottom: var(--space-12);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.patterns-guide__title {
+  margin-bottom: var(--space-6);
+  font-size: var(--text-xl);
+}
+
+.patterns-guide__subtitle {
+  margin: var(--space-8) 0 var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.patterns-guide__intro {
+  max-width: 44rem;
+}
+
+.patterns-guide__formats {
+  display: grid;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .patterns-guide__formats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.patterns-guide__format {
+  padding: var(--space-6);
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.patterns-guide__format .patterns-guide__subtitle {
+  margin-top: 0;
+}
+
+.patterns-guide__note {
+  margin-top: var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.patterns-guide__key {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.patterns-guide__key dt {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.patterns-guide__key dd {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pattern-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  font-size: var(--text-sm);
+}
+
+.pattern-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pattern-legend__swatch {
+  width: var(--space-6);
+  height: var(--space-4);
+  border-radius: var(--radius-sm);
+}
+
+.pattern-legend__swatch--agent { background-color: var(--color-primary); }
+.pattern-legend__swatch--model { background-color: var(--color-secondary); }
+.pattern-legend__swatch--tool { background-color: var(--color-bg); border: 2px solid var(--color-accent); }
+.pattern-legend__swatch--store { background-color: var(--color-bg-subtle); border: 1px solid var(--color-text-muted); }
+.pattern-legend__swatch--check { background-color: var(--color-accent-warm); }
+.pattern-legend__swatch--human { background-color: var(--color-bg); border: 2px solid var(--color-primary); }
+.pattern-legend__swatch--io { background-color: var(--color-bg); border: 1px solid var(--color-text-muted); }
+.pattern-legend__swatch--zone { background-color: var(--color-bg-subtle); border: 1px solid var(--color-border); }
+
+.pattern-legend__line {
+  width: var(--space-8);
+  border-top: 2px solid var(--color-text-muted);
+}
+
+.pattern-legend__line--main {
+  border-top: 3px solid var(--color-accent);
+}
+
+.pattern-legend__line--optional {
+  border-top-style: dashed;
+}
+
+/* ---------- Empty state ---------- */
+
+.patterns-empty {
+  padding-block: var(--space-12);
+  color: var(--color-text-muted);
+}
+
+/* ---------- Track (generic patterns, one per cloud) ---------- */
+
+.patterns-track {
+  padding-top: var(--space-16);
+  scroll-margin-top: var(--space-16);
+}
+
+.patterns-track__header {
+  padding: var(--space-8) var(--space-6);
+  background-color: var(--color-primary);
+  color: var(--color-text-on-dark);
+  border-radius: var(--radius-md);
+}
+
+.patterns-track__group {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent-warm);
+}
+
+.patterns-track__title {
+  margin-bottom: 0;
+  font-size: var(--text-2xl);
+  color: var(--color-text-on-dark);
+}
+
+.patterns-track__description {
+  max-width: 40rem;
+  margin-top: var(--space-3);
+  color: var(--color-secondary);
+}
+
+.patterns-track__count {
+  margin-top: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-secondary);
+}
+
+/* ---------- Entry ---------- */
+
+.pattern {
+  padding-block: var(--space-12);
+  border-bottom: 1px solid var(--color-border);
+  scroll-margin-top: var(--space-16);
+}
+
+@media (min-width: 768px) {
+  .pattern {
+    padding-block: var(--space-16);
+  }
+}
+
+.pattern__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.pattern__number {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.pattern__provider {
+  padding: 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  color: var(--color-text-on-dark);
+  background-color: var(--color-primary);
+  border-radius: var(--radius-sm);
+}
+
+.pattern__tag {
+  padding: 0 var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.6;
+  color: var(--color-primary);
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-sm);
+}
+
+.pattern__title {
+  margin-bottom: 0;
+  font-size: var(--text-2xl);
+  overflow-wrap: break-word;
+}
+
+.pattern__aliases {
+  margin-top: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pattern__summary {
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+}
+
+/* Body sections: "Everyday comparison", "In the agent system", … */
+.pattern__body {
+  margin-top: var(--space-8);
+}
+
+.pattern__body h4 {
+  font-size: var(--text-lg);
+  line-height: 1.2;
+  color: var(--color-primary);
+}
+
+.pattern__body h5 {
+  font-size: var(--text-base);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary);
+}
+
+.pattern__body > * + h4 {
+  margin-top: var(--space-8);
+}
+
+.pattern__body > h4 + *,
+.pattern__body > h5 + * {
+  margin-top: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .pattern__body h4 {
+    font-size: var(--text-xl);
+  }
+}
+
+/* ---------- Figure ---------- */
+
+.pattern-figure {
+  margin-top: var(--space-8);
+}
+
+.pattern-figure__canvas {
+  overflow-x: auto;
+  padding: var(--space-4);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* Narrow screens: the diagram keeps its natural size (width/height set by the
+   build from its viewBox) and scrolls inside the frame, so text never shrinks. */
+.pattern-figure__canvas svg {
+  display: block;
+  max-width: none;
+  height: auto;
+}
+
+@media (min-width: 768px) {
+  .pattern-figure__canvas svg {
+    width: 100%;
+  }
+}
+
+.pattern-figure figcaption {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pattern-figure__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* Diagram classes. Colors come only from here (DESIGN_SYSTEM.md). */
+.pattern-figure__canvas svg text {
+  font-family: var(--font-sans);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.pattern-figure__canvas svg .node-label {
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.pattern-figure__canvas svg .node-sub {
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+.pattern-figure__canvas svg .node rect {
+  stroke-width: 0;
+}
+
+.pattern-figure__canvas svg .node--agent rect { fill: var(--color-primary); }
+.pattern-figure__canvas svg .node--agent text { fill: var(--color-text-on-dark); }
+
+.pattern-figure__canvas svg .node--model rect { fill: var(--color-secondary); }
+.pattern-figure__canvas svg .node--model text { fill: var(--color-primary); }
+
+.pattern-figure__canvas svg .node--tool rect { fill: var(--color-bg); stroke: var(--color-accent); stroke-width: 2; }
+.pattern-figure__canvas svg .node--tool text { fill: var(--color-primary); }
+
+.pattern-figure__canvas svg .node--store rect { fill: var(--color-bg-subtle); stroke: var(--color-text-muted); stroke-width: 1; }
+.pattern-figure__canvas svg .node--store text { fill: var(--color-text); }
+
+.pattern-figure__canvas svg .node--check rect { fill: var(--color-accent-warm); }
+.pattern-figure__canvas svg .node--check text { fill: var(--color-primary); }
+
+.pattern-figure__canvas svg .node--human rect { fill: var(--color-bg); stroke: var(--color-primary); stroke-width: 2; }
+.pattern-figure__canvas svg .node--human text { fill: var(--color-primary); }
+
+.pattern-figure__canvas svg .node--io rect { fill: var(--color-bg); stroke: var(--color-text-muted); stroke-width: 1; }
+.pattern-figure__canvas svg .node--io text { fill: var(--color-primary); }
+
+.pattern-figure__canvas svg .zone rect {
+  fill: var(--color-bg-subtle);
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.pattern-figure__canvas svg .zone--inner rect {
+  fill: var(--color-bg);
+}
+
+.pattern-figure__canvas svg .zone-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  text-anchor: start;
+  dominant-baseline: hanging;
+  fill: var(--color-text-muted);
+}
+
+.pattern-figure__canvas svg .edge {
+  fill: none;
+  stroke: var(--color-text-muted);
+  stroke-width: 1.5;
+}
+
+.pattern-figure__canvas svg .edge--main {
+  stroke: var(--color-accent);
+  stroke-width: 2.5;
+}
+
+.pattern-figure__canvas svg .edge--optional {
+  stroke-dasharray: 6 4;
+}
+
+.pattern-figure__canvas svg .arrowhead {
+  fill: var(--color-text-muted);
+}
+
+.pattern-figure__canvas svg .arrowhead--main {
+  fill: var(--color-accent);
+}
+
+.pattern-figure__canvas svg .edge-label {
+  font-size: var(--text-xs);
+  fill: var(--color-text-muted);
+}
+
+/* ---------- Be careful ---------- */
+
+.pattern-caution {
+  margin-top: var(--space-8);
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--color-bg-subtle);
+  border-left: var(--space-1) solid var(--color-accent-warm);
+  border-radius: var(--radius-sm);
+}
+
+.pattern-caution__title {
+  margin-bottom: var(--space-2);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* ---------- Link rows: Implements, In the cloud, Related ---------- */
+
+.pattern-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.pattern__header .pattern-links {
+  margin-top: var(--space-4);
+}
+
+.pattern-links__title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.pattern-links__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.pattern-links--cloud .pattern-chip,
+.pattern-links--implements .pattern-chip {
+  border-color: var(--color-accent);
+}
+
+/* ---------- Cloud services table ---------- */
+
+.pattern-services {
+  margin-top: var(--space-8);
+}
+
+.pattern-services__title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+}
+
+.pattern-services th[scope="row"] {
+  font-weight: 700;
+  color: var(--color-primary);
+  white-space: nowrap;
+  background-color: transparent;
+}
+
+.pattern-services tbody tr:nth-child(even) th[scope="row"] {
+  background-color: var(--color-bg-subtle);
+}
+
+.pattern-services tbody tr + tr th[scope="row"] {
+  border-top: 1px solid var(--color-border);
+}

@@ -2,6 +2,14 @@
 
 All notable changes to kaloyandrenski.com are documented in this file. Entries are grouped by date, newest first, and cover feature-level additions and changes — not every commit.
 
+## 2026-11-22
+
+### Added
+- **Architecture Patterns page** — a new `/patterns/` field guide, linked from the main nav on every page and from the About section, collects architecture patterns for agentic AI on one page with a sticky contents list, category filters and search. Each numbered pattern has a diagram, an everyday comparison, notes on where it fits in an agent system and in a large company, steps, a short code sketch, a "Be careful" warning and links to related patterns, starting with Prompt Chaining, Orchestrator–Workers and Evaluator–Optimizer.
+- **Patterns page build** — adding a pattern is now just adding its markdown file and diagram. The deploy builds the page automatically and stops if a pattern uses a category that isn't on the fixed list, is missing one of the six sections or has them out of order, lacks its diagram, has a diagram that hardcodes its own colors, shares a position with another pattern, or has a "related" link to a pattern that doesn't exist.
+- **Microsoft Azure architectures** — the patterns page is now split into tracks. Generic architecture patterns come first, then a "Cloud · Microsoft Azure" section of reference architectures built from real Azure services, each with its own categories and AZ- numbering. Every Azure entry lists its services in a table and links to the generic pattern it implements, and that pattern links back under "In the cloud". The first is Multi-Agent Orchestration on Azure. The sidebar and filters now work by track and category, so adding Google Cloud later is just another track.
+- **Pattern entry skill** — a new `/pattern-entry` skill adds or revises patterns and cloud architectures the same way every time. It files each one under the right track and category, writes the fixed sections, draws the diagram in the page's diagram language, links related patterns both ways and checks the build.
+
 ## 2026-11-21
 
 ### Removed

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 270" role="img" aria-labelledby="evaluator-optimizer-title">
+  <title id="evaluator-optimizer-title">Evaluator and optimizer: a generator model writes a draft, an evaluator model scores it against a rubric, and the draft goes back with feedback until it passes or the round limit is reached.</title>
+  <defs>
+    <marker id="evaluator-optimizer-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="evaluator-optimizer-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="node node--store"><rect x="410" y="10" width="120" height="40" rx="2"/><text class="node-label" x="470" y="30">Rubric</text></g>
+  <g class="node node--io"><rect x="14" y="100" width="104" height="60" rx="8"/><text class="node-label" x="66" y="121">Task</text><text class="node-sub" x="66" y="141">+ criteria</text></g>
+  <g class="node node--model"><rect x="160" y="90" width="140" height="80" rx="8"/><text class="node-label" x="230" y="120">Generator</text><text class="node-sub" x="230" y="142">write · revise</text></g>
+  <g class="node node--check"><rect x="400" y="90" width="140" height="80" rx="8"/><text class="node-label" x="470" y="120">Evaluator</text><text class="node-sub" x="470" y="142">score · critique</text></g>
+  <g class="node node--io"><rect x="580" y="100" width="92" height="60" rx="8"/><text class="node-label" x="626" y="121">Output</text><text class="node-sub" x="626" y="141">accepted</text></g>
+
+  <path class="edge edge--main" d="M118 130 H158" marker-end="url(#evaluator-optimizer-arrow-main)"/>
+  <path class="edge edge--main" d="M300 130 H398" marker-end="url(#evaluator-optimizer-arrow-main)"/>
+  <path class="edge edge--main" d="M540 130 H578" marker-end="url(#evaluator-optimizer-arrow-main)"/>
+  <path class="edge" d="M470 50 V88" marker-end="url(#evaluator-optimizer-arrow)"/>
+  <path class="edge edge--main" d="M470 170 V220 H230 V172" marker-end="url(#evaluator-optimizer-arrow-main)"/>
+
+  <text class="edge-label" x="349" y="118">draft</text>
+  <text class="edge-label" x="559" y="116">pass</text>
+  <text class="edge-label" x="350" y="236">fail: feedback goes back to the generator</text>
+  <text class="edge-label" x="350" y="256">stops after N rounds and escalates</text>
+</svg>

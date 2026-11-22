@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-labelledby="SLUG-title">
+  <title id="SLUG-title">Pattern Name: one sentence describing the flow.</title>
+  <defs>
+    <marker id="SLUG-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="SLUG-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="node node--io"><rect x="14" y="50" width="92" height="60" rx="8"/><text class="node-label" x="60" y="71">Input</text><text class="node-sub" x="60" y="91">request</text></g>
+  <g class="node node--model"><rect x="134" y="50" width="92" height="60" rx="8"/><text class="node-label" x="180" y="71">Step</text><text class="node-sub" x="180" y="91">does a thing</text></g>
+  <g class="node node--io"><rect x="254" y="50" width="92" height="60" rx="8"/><text class="node-label" x="300" y="71">Output</text><text class="node-sub" x="300" y="91">result</text></g>
+
+  <path class="edge edge--main" d="M106 80 H132" marker-end="url(#SLUG-arrow-main)"/>
+  <path class="edge edge--main" d="M226 80 H252" marker-end="url(#SLUG-arrow-main)"/>
+</svg>

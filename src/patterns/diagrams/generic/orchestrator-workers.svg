@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 330" role="img" aria-labelledby="orchestrator-workers-title">
+  <title id="orchestrator-workers-title">Orchestrator and workers: an orchestrator agent plans a task and hands sub-tasks to three worker agents, then combines their results into one answer, re-planning when the results have gaps.</title>
+  <defs>
+    <marker id="orchestrator-workers-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="orchestrator-workers-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="node node--io"><rect x="14" y="140" width="104" height="60" rx="8"/><text class="node-label" x="66" y="161">Task</text><text class="node-sub" x="66" y="181">open-ended</text></g>
+  <g class="node node--agent"><rect x="150" y="130" width="124" height="80" rx="8"/><text class="node-label" x="212" y="160">Orchestrator</text><text class="node-sub" x="212" y="182">plan · delegate</text></g>
+
+  <g class="node node--agent"><rect x="330" y="42" width="140" height="56" rx="8"/><text class="node-label" x="400" y="61">Worker A</text><text class="node-sub" x="400" y="81">search the code</text></g>
+  <g class="node node--agent"><rect x="330" y="142" width="140" height="56" rx="8"/><text class="node-label" x="400" y="161">Worker B</text><text class="node-sub" x="400" y="181">change the files</text></g>
+  <g class="node node--agent"><rect x="330" y="242" width="140" height="56" rx="8"/><text class="node-label" x="400" y="261">Worker C</text><text class="node-sub" x="400" y="281">run the tests</text></g>
+
+  <g class="node node--agent"><rect x="530" y="130" width="124" height="80" rx="8"/><text class="node-label" x="592" y="160">Orchestrator</text><text class="node-sub" x="592" y="182">synthesize</text></g>
+  <g class="node node--io"><rect x="530" y="270" width="124" height="44" rx="8"/><text class="node-label" x="592" y="292">Answer</text></g>
+
+  <path class="edge edge--main" d="M118 170 H148" marker-end="url(#orchestrator-workers-arrow-main)"/>
+  <path class="edge edge--main" d="M274 170 C302 170 300 70 328 70" marker-end="url(#orchestrator-workers-arrow-main)"/>
+  <path class="edge edge--main" d="M274 170 H328" marker-end="url(#orchestrator-workers-arrow-main)"/>
+  <path class="edge edge--main" d="M274 170 C302 170 300 270 328 270" marker-end="url(#orchestrator-workers-arrow-main)"/>
+  <path class="edge" d="M470 70 C500 70 498 160 528 160" marker-end="url(#orchestrator-workers-arrow)"/>
+  <path class="edge" d="M470 170 H528" marker-end="url(#orchestrator-workers-arrow)"/>
+  <path class="edge" d="M470 270 C500 270 498 180 528 180" marker-end="url(#orchestrator-workers-arrow)"/>
+  <path class="edge edge--main" d="M592 210 V268" marker-end="url(#orchestrator-workers-arrow-main)"/>
+  <path class="edge edge--optional" d="M592 130 V20 H212 V128" marker-end="url(#orchestrator-workers-arrow)"/>
+
+  <text class="edge-label" x="400" y="12">re-plan when the results have gaps</text>
+  <text class="edge-label" x="497" y="154">results</text>
+</svg>

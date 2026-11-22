@@ -1,0 +1,67 @@
+[
+  {
+    "id": "generic",
+    "name": "Architecture patterns",
+    "group": "Generic",
+    "prefix": "",
+    "format": "pattern",
+    "description": "Vendor-neutral patterns for agentic AI. They describe the idea, so they work on any cloud and any framework.",
+    "categories": [
+      {
+        "name": "Orchestration",
+        "description": "How work is split, sequenced, routed and delegated between model calls and agents: chains, routers, parallel fan-out, orchestrators, hand-offs."
+      },
+      {
+        "name": "Reliability",
+        "description": "How the system catches and recovers from bad output or failure: evaluator loops, retries, fallbacks, checkpoints, idempotent steps."
+      },
+      {
+        "name": "Context & Memory",
+        "description": "What the model sees and remembers: retrieval, context compaction, short- and long-term memory, shared state between agents."
+      },
+      {
+        "name": "Tools & Integration",
+        "description": "How agents act on the outside world: tool design, MCP servers, sandboxes, connecting to enterprise systems and APIs."
+      },
+      {
+        "name": "Safety & Governance",
+        "description": "Keeping agents within bounds: guardrails, least-privilege tools, human approval, audit trails, policy enforcement."
+      },
+      {
+        "name": "Cost & Performance",
+        "description": "Making agents cheaper and faster: model routing by difficulty, caching, batching, budgets and limits."
+      },
+      {
+        "name": "Evaluation",
+        "description": "Knowing whether the system works: eval sets, LLM-as-judge, regression testing, tracing and production monitoring."
+      }
+    ]
+  },
+  {
+    "id": "azure",
+    "name": "Microsoft Azure",
+    "group": "Cloud",
+    "prefix": "AZ",
+    "format": "cloud",
+    "provider": "Azure",
+    "description": "Reference architectures built from real Azure services. Each one implements one or more of the generic patterns above.",
+    "categories": [
+      {
+        "name": "AI Agents",
+        "description": "Hosting, orchestrating and connecting agents on Azure: Microsoft Foundry, Foundry Agent Service, Microsoft Agent Framework, multi-agent workflows."
+      },
+      {
+        "name": "Data & Retrieval",
+        "description": "Grounding agents in enterprise data on Azure: Azure AI Search, Cosmos DB, Storage, Fabric and RAG pipelines."
+      },
+      {
+        "name": "Integration & Events",
+        "description": "Connecting agents to systems and events on Azure: API Management, Functions, Logic Apps, Service Bus, Event Grid."
+      },
+      {
+        "name": "Security & Governance",
+        "description": "Securing and governing AI workloads on Azure: Entra ID and managed identities, private networking, AI gateway policies, Content Safety, monitoring."
+      }
+    ]
+  }
+]

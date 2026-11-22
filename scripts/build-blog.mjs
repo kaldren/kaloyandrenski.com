@@ -12,9 +12,15 @@
 // template's top comment), written to <out>/agents/index.html. <repo> is the parent
 // of <src>, so the default src/ reads the repository's own .claude/.
 //
+// And the /patterns/ page: the tracks in <src>/patterns/catalog.json, and every
+// <src>/patterns/entries/<track>/<slug>.md plus its inline diagram
+// <src>/patterns/diagrams/<track>/<slug>.svg, are filled into
+// <src>/patterns/template.html (contract in that template's top comment), written to
+// <out>/patterns/index.html.
+//
 // Usage: node scripts/build-blog.mjs [srcDir=src] [outDir=_site]
-// Exits non-zero, naming the file and the problem, on a malformed post, crew.json or
-// definition. Nothing is written to <out> unless every input is valid.
+// Exits non-zero, naming the file and the problem, on a malformed post, crew.json,
+// definition, pattern or diagram. Nothing is written to <out> unless every input is valid.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -29,6 +35,7 @@ const outDir = path.resolve(process.argv[3] ?? '_site');
 const postsDir = path.join(srcDir, 'blog', 'posts');
 const templatesDir = path.join(srcDir, 'blog', 'templates');
 const agentsDir = path.join(srcDir, 'agents');
+const patternsDir = path.join(srcDir, 'patterns');
 const repoDir = path.dirname(srcDir);
 const claudeDir = path.join(repoDir, '.claude');
 const REPO_URL = 'https://github.com/kaldren/kaloyandrenski.com/blob/main/';
@@ -157,22 +164,17 @@ function requireText(file, data, field) {
   return String(value).trim();
 }
 
-function readPost(file) {
-  const slug = path.basename(file, '.md');
-  if (slug === 'index') {
-    throw new BuildError(file, '"index" is reserved for the blog index; rename the post file');
-  }
-  if (!/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(slug)) {
-    throw new BuildError(file, 'file name must use only letters, digits, ".", "_" or "-" (it becomes the URL slug)');
-  }
+const SLUG_RE = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
 
+// Reads a markdown file with a required, non-empty frontmatter block.
+function readMarkdown(file, needs) {
   let source;
   try {
     source = fs.readFileSync(file, 'utf8');
   } catch (err) {
     throw new BuildError(file, `cannot read file (${err.message})`);
   }
-  if (!/^﻿?---[ \t]*\r?\n/.test(source)) {
+  if (!/^\uFEFF?---[ \t]*\r?\n/.test(source)) {
     throw new BuildError(file, 'missing frontmatter block (the file must start with a "---" line)');
   }
 
@@ -185,9 +187,21 @@ function readPost(file) {
   }
   const data = parsed.data && typeof parsed.data === 'object' ? parsed.data : {};
   if (Object.keys(data).length === 0) {
-    throw new BuildError(file, 'missing or empty frontmatter block (needs title, date and summary)');
+    throw new BuildError(file, `missing or empty frontmatter block (needs ${needs})`);
+  }
+  return { parsed, data };
+}
+
+function readPost(file) {
+  const slug = path.basename(file, '.md');
+  if (slug === 'index') {
+    throw new BuildError(file, '"index" is reserved for the blog index; rename the post file');
+  }
+  if (!SLUG_RE.test(slug)) {
+    throw new BuildError(file, 'file name must use only letters, digits, ".", "_" or "-" (it becomes the URL slug)');
   }
 
+  const { parsed, data } = readMarkdown(file, 'title, date and summary');
   const title = requireText(file, data, 'title');
   if (data.date == null || String(data.date).trim() === '') {
     throw new BuildError(file, 'frontmatter is missing required field "date"');
@@ -200,9 +214,8 @@ function readPost(file) {
 
 // ---------- Templates ----------
 
-function readTemplate(file, marker) {
-  if (!fs.existsSync(file)) throw new BuildError(file, 'template not found');
-  const html = fs.readFileSync(file, 'utf8');
+// Splits `html` around one <!-- BUILD:marker --> … <!-- /BUILD:marker --> region.
+function splitRegion(file, html, marker) {
   const open = `<!-- BUILD:${marker} -->`;
   const close = `<!-- /BUILD:${marker} -->`;
   const start = html.indexOf(open);
@@ -213,14 +226,25 @@ function readTemplate(file, marker) {
   if (html.indexOf(open, start + 1) !== -1 || html.indexOf(close, end + 1) !== -1) {
     throw new BuildError(file, `template must contain "${open}" … "${close}" exactly once`);
   }
-  return { file, before: html.slice(0, start), after: html.slice(end + close.length) };
+  return { before: html.slice(0, start), after: html.slice(end + close.length) };
+}
+
+function readTemplate(file, marker) {
+  if (!fs.existsSync(file)) throw new BuildError(file, 'template not found');
+  const html = fs.readFileSync(file, 'utf8');
+  return { file, ...splitRegion(file, html, marker) };
+}
+
+const TOKEN_RE = /\{\{(title|summary|date_iso|date_display)\}\}/g;
+
+function fillTokens(text, tokens) {
+  return text.replace(TOKEN_RE, (_, k) => escapeHtml(tokens[k] ?? ''));
 }
 
 // Text tokens are filled in the template parts only, never inside the inserted
 // region, so a post that mentions "{{title}}" in its body is left alone.
 function fill(template, tokens, region) {
-  const sub = (s) => s.replace(/\{\{(title|summary|date_iso|date_display)\}\}/g, (_, k) => escapeHtml(tokens[k] ?? ''));
-  return sub(template.before) + region + sub(template.after);
+  return fillTokens(template.before, tokens) + region + fillTokens(template.after, tokens);
 }
 
 function indexItem(post) {
@@ -492,6 +516,466 @@ function crewRegion(crew) {
   ].join('\n');
 }
 
+// ---------- Patterns page ----------
+//
+// The page is organised in tracks (src/patterns/catalog.json): the generic patterns
+// plus one track per cloud. Each track has its own categories, number prefix and entry
+// format, and its entries live in entries/<track>/ with diagrams in diagrams/<track>/.
+
+// Every entry has exactly these "##" sections, in this order, per format. Keep in sync
+// with the pattern-entry skill.
+const FORMATS = {
+  pattern: {
+    needs: 'title, category, order, summary, figure and caution',
+    sections: ['Everyday comparison', 'Where it comes from', 'In the agent system', 'In a large company', 'Step by step', 'Code sketch'],
+    sceneTitle: true, // the first section opens with a "###" scene title
+  },
+  cloud: {
+    needs: 'title, category, order, summary, figure, caution, services and implements',
+    sections: ['Scenario', 'How it works', 'Security and identity', 'Reliability and operations', 'Cost', 'Deploy it', 'Learn more'],
+    sceneTitle: false,
+  },
+};
+
+function categorySlug(name) {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'other';
+}
+
+// Reads catalog.json: the tracks in page order, each with its categories in page order.
+function readCatalog(errors) {
+  const file = path.join(patternsDir, 'catalog.json');
+  try {
+    if (!fs.existsSync(file)) throw new BuildError(file, 'catalog file not found');
+    let list;
+    try {
+      list = JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch (err) {
+      throw new BuildError(file, `invalid JSON (${err.message})`);
+    }
+    if (!Array.isArray(list) || list.length === 0) throw new BuildError(file, 'must be a non-empty JSON array of tracks');
+    const tracks = [];
+    list.forEach((t, i) => {
+      const where = `track ${i + 1}${t && isText(t.id) ? ` ("${t.id}")` : ''}`;
+      if (!t || !isText(t.id) || !SLUG_RE.test(t.id)) throw new BuildError(file, `${where} needs an "id" made of letters, digits, ".", "_" or "-"`);
+      if (tracks.some((x) => x.id === t.id)) throw new BuildError(file, `${where}: id is used twice`);
+      for (const key of ['name', 'group', 'description']) {
+        if (!isText(t[key])) throw new BuildError(file, `${where} needs a non-empty "${key}"`);
+      }
+      if (typeof t.prefix !== 'string') throw new BuildError(file, `${where} needs a "prefix" string ("" for none)`);
+      if (!FORMATS[t.format]) throw new BuildError(file, `${where}: "format" must be one of ${Object.keys(FORMATS).join(', ')}`);
+      if (t.format === 'cloud' && !isText(t.provider)) throw new BuildError(file, `${where}: cloud tracks need a "provider" (e.g. "Azure")`);
+      if (!Array.isArray(t.categories) || t.categories.length === 0) throw new BuildError(file, `${where} needs a non-empty "categories" array`);
+      const categories = [];
+      t.categories.forEach((c, j) => {
+        if (!c || !isText(c.name) || !isText(c.description)) {
+          throw new BuildError(file, `${where}, category ${j + 1} needs a non-empty "name" and "description"`);
+        }
+        const slug = categorySlug(c.name.trim());
+        if (categories.some((x) => x.slug === slug)) throw new BuildError(file, `${where}: category "${c.name}" is listed twice`);
+        categories.push({ name: c.name.trim(), slug, key: `${t.id}/${slug}`, description: c.description.trim() });
+      });
+      tracks.push({
+        id: t.id,
+        name: t.name.trim(),
+        group: t.group.trim(),
+        prefix: t.prefix.trim(),
+        format: t.format,
+        provider: t.format === 'cloud' ? t.provider.trim() : null,
+        description: t.description.trim(),
+        categories,
+      });
+    });
+    return tracks;
+  } catch (err) {
+    if (!(err instanceof BuildError)) throw err;
+    errors.push(err);
+    return null;
+  }
+}
+
+// Entry bodies use "##" for their sections; on the page the track is the h2 and each
+// entry title the h3, so every heading in the body moves two levels down.
+function demoteHeadings(html) {
+  return html.replace(/<(\/?)h([1-4])(?=[\s>])/g, (_, slash, level) => `<${slash}h${Number(level) + 2}`);
+}
+
+// Checks the body's section headings against the track format.
+function checkSections(file, content, format) {
+  const tokens = marked.lexer(content).filter((t) => t.type !== 'space');
+  const found = tokens.filter((t) => t.type === 'heading' && t.depth <= 2).map((t) => `${'#'.repeat(t.depth)} ${t.text.trim()}`);
+  const expected = format.sections.map((h) => `## ${h}`);
+  if (found.join('\n') !== expected.join('\n')) {
+    throw new BuildError(
+      file,
+      `body sections must be exactly, in order: ${expected.map((h) => `"${h}"`).join(', ')}; found ${found.length ? found.map((h) => `"${h}"`).join(', ') : 'none'}`,
+    );
+  }
+  if (format.sceneTitle) {
+    const first = tokens.findIndex((t) => t.type === 'heading' && t.depth === 2);
+    const next = tokens[first + 1];
+    if (!next || next.type !== 'heading' || next.depth !== 3) {
+      throw new BuildError(file, `"## ${format.sections[0]}" must open with a "###" scene title`);
+    }
+  }
+}
+
+// Checks the hand-written diagram and returns it for inlining. Colors come only
+// from patterns.css (DESIGN_SYSTEM.md), so the SVG may carry classes but no colors,
+// and ids must be prefixed with the slug because every diagram shares one page.
+function readDiagram(file, slug, track) {
+  if (!fs.existsSync(file)) throw new BuildError(file, `diagram not found (every entry needs patterns/diagrams/${track}/${slug}.svg)`);
+  const svg = fs.readFileSync(file, 'utf8').trim();
+  const problems = [];
+  if (!svg.startsWith('<svg')) problems.push('must start with "<svg" (no XML prolog or comments before it)');
+  if (!/^<svg\b[^>]*\brole="img"/.test(svg)) problems.push('the <svg> element needs role="img"');
+  if (!/<title\b[^>]*>[^<]*\S[^<]*<\/title>/.test(svg)) problems.push('needs a non-empty <title> describing the diagram');
+  if (/<script|\son[a-z]+\s*=/i.test(svg)) problems.push('must not contain scripts or event handlers');
+  if (/\sstyle\s*=|<style/i.test(svg)) problems.push('must not use inline styles; use the classes styled in patterns.css');
+  if (/(?:fill|stroke|stop-color|color)\s*[=:]\s*["']?\s*(?:#|rgb|hsl)/i.test(svg)) problems.push('must not set colors; use the classes styled in patterns.css');
+  if (/<image\b|<foreignObject\b/i.test(svg)) problems.push('must not embed images or HTML; draw with the node and edge classes');
+  for (const id of new Set([...svg.matchAll(/\sid="([^"]*)"/g)].map((m) => m[1]))) {
+    if (!id.startsWith(`${slug}-`)) problems.push(`id "${id}" must start with "${slug}-" so it stays unique on the page`);
+  }
+  const box = svg.match(/^<svg\b[^>]*\bviewBox="0 0 (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)"/);
+  if (!box) problems.push('the <svg> element needs viewBox="0 0 {width} {height}"');
+  if (/^<svg\b[^>]*\s(?:width|height)=/.test(svg)) problems.push('leave width and height off the <svg> element; the build sets them from viewBox');
+  if (problems.length) throw new BuildError(file, problems.join('; '));
+  // The natural size lets narrow screens show the diagram at full size inside a
+  // scrolling frame instead of shrinking its text.
+  return svg.replace(/^<svg\b/, `<svg width="${box[1]}" height="${box[2]}"`);
+}
+
+function slugList(file, data, field) {
+  const list = data[field] ?? [];
+  if (!Array.isArray(list) || !list.every((r) => typeof r === 'string' && r.trim())) {
+    throw new BuildError(file, `frontmatter "${field}" must be a list of entry file names (without .md)`);
+  }
+  return list.map((r) => r.trim());
+}
+
+function readServices(file, data) {
+  const list = data.services;
+  const ok =
+    Array.isArray(list) &&
+    list.length >= 2 &&
+    list.every((s) => s && typeof s === 'object' && isText(s.name) && isText(s.role));
+  if (!ok) {
+    throw new BuildError(file, 'frontmatter "services" must list at least two services, each with a "name" (the real product name) and a "role"');
+  }
+  return list.map((s) => ({ name: s.name.trim(), role: s.role.trim() }));
+}
+
+function readEntry(file, track) {
+  const slug = path.basename(file, '.md');
+  if (!SLUG_RE.test(slug)) {
+    throw new BuildError(file, 'file name must use only letters, digits, ".", "_" or "-" (it becomes the anchor on /patterns/)');
+  }
+  const format = FORMATS[track.format];
+  const { parsed, data } = readMarkdown(file, format.needs);
+  const title = requireText(file, data, 'title');
+  const category = requireText(file, data, 'category');
+  const cat = track.categories.find((c) => c.name === category);
+  if (!cat) {
+    throw new BuildError(
+      file,
+      `category "${category}" is not a "${track.id}" category in patterns/catalog.json (use one of: ${track.categories.map((c) => c.name).join(', ')}, or add it there first)`,
+    );
+  }
+  if (typeof data.order !== 'number' || !Number.isFinite(data.order)) {
+    throw new BuildError(file, 'frontmatter "order" must be a number');
+  }
+  const summary = requireText(file, data, 'summary');
+  const figure = requireText(file, data, 'figure');
+  const caution = requireText(file, data, 'caution');
+  const aliases = data.aliases == null ? null : requireText(file, data, 'aliases');
+  const related = slugList(file, data, 'related');
+  let services = null;
+  let implementsList = [];
+  if (track.format === 'cloud') {
+    services = readServices(file, data);
+    implementsList = slugList(file, data, 'implements');
+    if (implementsList.length === 0) throw new BuildError(file, 'frontmatter "implements" must name at least one generic pattern');
+  } else if (data.services != null || data.implements != null) {
+    throw new BuildError(file, '"services" and "implements" are only for cloud tracks');
+  }
+  checkSections(file, parsed.content, format);
+  const diagram = readDiagram(path.join(patternsDir, 'diagrams', track.id, `${slug}.svg`), slug, track.id);
+  return {
+    file,
+    slug,
+    track,
+    title,
+    category: cat,
+    order: data.order,
+    summary,
+    figure,
+    caution,
+    aliases,
+    related,
+    services,
+    implements: implementsList,
+    implementedBy: [],
+    diagram,
+    html: demoteHeadings(marked.parse(parsed.content)),
+  };
+}
+
+// The template has three regions, in this order: the hero stats, the contents sidebar
+// and the entries.
+const PATTERN_REGIONS = ['patterns-stats', 'patterns-nav', 'patterns-entries'];
+
+function readPatternsTemplate(file) {
+  if (!fs.existsSync(file)) throw new BuildError(file, 'template not found');
+  let rest = fs.readFileSync(file, 'utf8');
+  const parts = [];
+  for (const marker of PATTERN_REGIONS) {
+    const split = splitRegion(file, rest, marker);
+    parts.push(split.before);
+    rest = split.after;
+  }
+  parts.push(rest);
+  const ids = new Set([...parts.join('').matchAll(/\sid="([^"]*)"/g)].map((m) => m[1]));
+  return { file, parts, ids };
+}
+
+// Reads and validates every entry, pushing BuildErrors onto `errors`. Returns the
+// non-empty tracks in catalog order, each with its non-empty categories in catalog
+// order and its entries sorted by `order` within a category, numbered per track
+// ("01", or "AZ-01" with a prefix) in that display order.
+function readPatterns(errors, template) {
+  const tracks = readCatalog(errors);
+  if (!tracks) return null;
+
+  const entriesDir = path.join(patternsDir, 'entries');
+  if (fs.existsSync(entriesDir)) {
+    for (const name of fs.readdirSync(entriesDir)) {
+      const full = path.join(entriesDir, name);
+      if (!fs.statSync(full).isDirectory()) {
+        errors.push(new BuildError(full, `entries go in a track folder: patterns/entries/{${tracks.map((t) => t.id).join(',')}}/`));
+      } else if (!tracks.some((t) => t.id === name)) {
+        errors.push(new BuildError(full, `"${name}" is not a track id in patterns/catalog.json`));
+      }
+    }
+  }
+
+  const files = tracks.flatMap((track) => {
+    const dir = path.join(entriesDir, track.id);
+    return fs.existsSync(dir)
+      ? fs.readdirSync(dir).filter((f) => f.endsWith('.md')).sort().map((f) => ({ file: path.join(dir, f), track }))
+      : [];
+  });
+  const entries = [];
+  for (const { file, track } of files) {
+    try {
+      entries.push(readEntry(file, track));
+    } catch (err) {
+      if (!(err instanceof BuildError)) throw err;
+      errors.push(err);
+    }
+  }
+
+  // Every entry file counts as existing, even one that failed to read, so a broken
+  // entry is reported once and not again by every entry that links to it.
+  const known = new Map();
+  for (const { file, track } of files) {
+    const slug = path.basename(file, '.md');
+    if (known.has(slug)) errors.push(new BuildError(file, `file name "${slug}" is already used in patterns/entries/${known.get(slug).id}/ (anchors must be unique across tracks)`));
+    else known.set(slug, track);
+  }
+  const bySlug = new Map(entries.map((e) => [e.slug, e]));
+  const emittedIds = new Set([...template?.ids ?? [], 'pattern-search', ...tracks.map((t) => `track-${t.id}`)]);
+  for (const t of tracks) {
+    const orders = new Map();
+    for (const e of entries.filter((x) => x.track === t)) {
+      if (orders.has(e.order)) errors.push(new BuildError(e.file, `"order" ${e.order} is already used by ${path.basename(orders.get(e.order).file)} in this track`));
+      else orders.set(e.order, e);
+    }
+  }
+  for (const e of entries) {
+    for (const r of e.related) {
+      if (r === e.slug) errors.push(new BuildError(e.file, '"related" must not list the entry itself'));
+      else if (!known.has(r)) errors.push(new BuildError(e.file, `"related" names "${r}", but there is no entry with that file name`));
+    }
+    for (const r of e.implements) {
+      const track = known.get(r);
+      if (!track) errors.push(new BuildError(e.file, `"implements" names "${r}", but there is no entry with that file name`));
+      else if (track.format !== 'pattern') errors.push(new BuildError(e.file, `"implements" must name generic patterns; "${r}" is in the "${track.id}" track`));
+      else bySlug.get(r)?.implementedBy.push(e);
+    }
+    if ([...emittedIds].some((id) => id === e.slug || id.startsWith(`${e.slug}-`))) {
+      errors.push(new BuildError(e.file, `file name "${e.slug}" clashes with an id on the page; rename the entry`));
+    }
+  }
+
+  const shown = [];
+  for (const t of tracks) {
+    const own = entries.filter((e) => e.track === t).sort((a, b) => a.order - b.order);
+    const categories = t.categories.filter((c) => own.some((e) => e.category === c));
+    if (!categories.length) continue;
+    const list = categories.flatMap((c) => own.filter((e) => e.category === c));
+    list.forEach((e, i) => {
+      const n = String(i + 1).padStart(2, '0');
+      e.number = t.prefix ? `${t.prefix}-${n}` : n;
+    });
+    shown.push({ ...t, categories, entries: list });
+  }
+  for (const e of entries) e.implementedBy.sort((a, b) => a.number.localeCompare(b.number));
+  return { tracks: shown, bySlug, count: entries.length };
+}
+
+function patternStats(data) {
+  return data.tracks
+    .map(
+      (t) =>
+        `<div class="patterns-stats__item"><dt>${escapeHtml(t.name)}</dt><dd>${t.entries.length}</dd></div>`,
+    )
+    .join('\n');
+}
+
+function patternsNav(data) {
+  const trackChips = [
+    `<button type="button" class="pattern-chip" data-track="all" aria-pressed="true">All</button>`,
+    ...data.tracks.map(
+      (t) => `<button type="button" class="pattern-chip" data-track="${escapeHtml(t.id)}" aria-pressed="false">${escapeHtml(t.name)}</button>`,
+    ),
+  ];
+  const categoryChips = [
+    `<button type="button" class="pattern-chip" data-category="all" aria-pressed="true">All categories</button>`,
+    ...data.tracks.flatMap((t) =>
+      t.categories.map(
+        (c) =>
+          `<button type="button" class="pattern-chip" data-category="${escapeHtml(c.key)}" data-for-track="${escapeHtml(t.id)}" aria-pressed="false">${escapeHtml(c.name)}</button>`,
+      ),
+    ),
+  ];
+  const sections = data.tracks.map((t) => {
+    const groups = t.categories.map((c) => {
+      const items = t.entries
+        .filter((e) => e.category === c)
+        .map(
+          (e) =>
+            `<li class="patterns-toc__item" data-slug="${escapeHtml(e.slug)}"><a href="#${escapeHtml(e.slug)}">` +
+            `<span class="patterns-toc__number">${escapeHtml(e.number)}</span>${escapeHtml(e.title)}</a></li>`,
+        );
+      return [
+        `<li class="patterns-toc__group" data-category="${escapeHtml(c.key)}">`,
+        `<p class="patterns-toc__heading">${escapeHtml(c.name)}</p>`,
+        `<ol class="patterns-toc__items">`,
+        ...items,
+        `</ol>`,
+        `</li>`,
+      ].join('\n');
+    });
+    return [
+      `<li class="patterns-toc__track" data-track="${escapeHtml(t.id)}">`,
+      `<a class="patterns-toc__track-link" href="#track-${escapeHtml(t.id)}"><span class="patterns-toc__group-label">${escapeHtml(t.group)}</span>${escapeHtml(t.name)}</a>`,
+      `<ol class="patterns-toc__groups">`,
+      ...groups,
+      `</ol>`,
+      `</li>`,
+    ].join('\n');
+  });
+  return [
+    `<div class="patterns-filter" hidden>`,
+    `<label class="patterns-filter__label" for="pattern-search">Search</label>`,
+    `<input class="patterns-filter__search" id="pattern-search" type="search" autocomplete="off" placeholder="e.g. loop, delegate, AI Search">`,
+    `<div class="patterns-filter__chips" role="group" aria-label="Filter by track">`,
+    ...trackChips,
+    `</div>`,
+    `<div class="patterns-filter__chips" role="group" aria-label="Filter by category">`,
+    ...categoryChips,
+    `</div>`,
+    `</div>`,
+    `<ol class="patterns-toc__tracks">`,
+    ...sections,
+    `</ol>`,
+  ].join('\n');
+}
+
+const entryLink = (e) =>
+  `<li><a class="pattern-chip pattern-chip--link" href="#${escapeHtml(e.slug)}">${escapeHtml(e.number)} · ${escapeHtml(e.title)}</a></li>`;
+
+function linkRow(cls, label, entries) {
+  if (!entries.length) return '';
+  return `<nav class="pattern-links ${cls}" aria-label="${escapeHtml(label)}"><p class="pattern-links__title">${escapeHtml(label)}</p><ul class="pattern-links__list">${entries.map(entryLink).join('')}</ul></nav>`;
+}
+
+function servicesTable(e) {
+  const rows = e.services.map((s) => `<tr><th scope="row">${escapeHtml(s.name)}</th><td>${escapeHtml(s.role)}</td></tr>`);
+  return [
+    `<section class="pattern-services" aria-labelledby="${escapeHtml(e.slug)}-services">`,
+    `<h4 class="pattern-services__title" id="${escapeHtml(e.slug)}-services">${escapeHtml(e.track.provider)} services</h4>`,
+    `<div class="table-wrap" tabindex="0"><table>`,
+    `<thead><tr><th scope="col">Service</th><th scope="col">Role in this architecture</th></tr></thead>`,
+    `<tbody>${rows.join('')}</tbody>`,
+    `</table></div>`,
+    `</section>`,
+  ].join('\n');
+}
+
+function patternArticle(e, data) {
+  const id = escapeHtml(e.slug);
+  const words = [e.title, e.aliases ?? '', e.summary, e.figure, e.category.name, e.track.name, ...(e.services ?? []).map((s) => s.name)];
+  const implemented = e.implements.map((r) => data.bySlug.get(r)).filter(Boolean);
+  const related = e.related.map((r) => data.bySlug.get(r)).filter(Boolean);
+  return [
+    `<article class="pattern pattern--${escapeHtml(e.track.format)}" id="${id}" data-track="${escapeHtml(e.track.id)}" data-category="${escapeHtml(e.category.key)}" data-search="${escapeHtml(words.join(' ').toLowerCase())}" aria-labelledby="${id}-heading">`,
+    `<header class="pattern__header">`,
+    `<p class="pattern__meta"><span class="pattern__number">${escapeHtml(e.number)}</span>` +
+      (e.track.provider ? `<span class="pattern__provider">${escapeHtml(e.track.provider)}</span>` : '') +
+      `<span class="pattern__tag">${escapeHtml(e.category.name)}</span></p>`,
+    `<h3 class="pattern__title" id="${id}-heading">${escapeHtml(e.title)}</h3>`,
+    e.aliases ? `<p class="pattern__aliases">Also known as: ${escapeHtml(e.aliases)}</p>` : '',
+    `<p class="pattern__summary">${escapeHtml(e.summary)}</p>`,
+    linkRow('pattern-links--implements', 'Implements', implemented),
+    `</header>`,
+    `<figure class="pattern-figure">`,
+    `<div class="pattern-figure__canvas" tabindex="0" role="region" aria-label="Diagram: ${escapeHtml(e.title)}">${e.diagram}</div>`,
+    `<figcaption><span class="pattern-figure__label">Fig. ${escapeHtml(e.number)}</span> ${escapeHtml(e.figure)}</figcaption>`,
+    `</figure>`,
+    e.services ? servicesTable(e) : '',
+    `<div class="post-body pattern__body">`,
+    e.html,
+    `</div>`,
+    `<aside class="pattern-caution" aria-label="Be careful">`,
+    `<p class="pattern-caution__title">Be careful</p>`,
+    `<p>${escapeHtml(e.caution)}</p>`,
+    `</aside>`,
+    linkRow('pattern-links--cloud', 'In the cloud', e.implementedBy),
+    linkRow('pattern-links--related', 'Related', related),
+    `</article>`,
+  ]
+    .filter(Boolean)
+    .join('\n');
+}
+
+function patternTrack(t, data) {
+  return [
+    `<section class="patterns-track" id="track-${escapeHtml(t.id)}" data-track="${escapeHtml(t.id)}" aria-labelledby="track-${escapeHtml(t.id)}-heading">`,
+    `<header class="patterns-track__header">`,
+    `<p class="patterns-track__group">${escapeHtml(t.group)}</p>`,
+    `<h2 class="patterns-track__title" id="track-${escapeHtml(t.id)}-heading">${escapeHtml(t.name)}</h2>`,
+    `<p class="patterns-track__description">${escapeHtml(t.description)}</p>`,
+    `<p class="patterns-track__count">${`${t.entries.length} ${t.entries.length === 1 ? 'entry' : 'entries'}`} · ${t.categories.map((c) => escapeHtml(c.name)).join(' · ')}</p>`,
+    `</header>`,
+    ...t.entries.map((e) => patternArticle(e, data)),
+    `</section>`,
+  ].join('\n');
+}
+
+function patternsPage(template, data) {
+  const [beforeStats, beforeNav, beforeEntries, after] = template.parts;
+  return (
+    beforeStats +
+    patternStats(data) +
+    beforeNav +
+    patternsNav(data) +
+    beforeEntries +
+    data.tracks.map((t) => patternTrack(t, data)).join('\n') +
+    after
+  );
+}
+
 // ---------- Build ----------
 
 function main() {
@@ -526,6 +1010,15 @@ function main() {
     }
   }
   const crew = readCrew(errors);
+
+  let patternsTemplate = null;
+  try {
+    patternsTemplate = readPatternsTemplate(path.join(patternsDir, 'template.html'));
+  } catch (err) {
+    if (!(err instanceof BuildError)) throw err;
+    errors.push(err);
+  }
+  const patterns = readPatterns(errors, patternsTemplate);
   if (errors.length) fail(errors);
 
   posts.sort((a, b) => b.date.time - a.date.time || a.slug.localeCompare(b.slug));
@@ -549,8 +1042,16 @@ function main() {
   fs.writeFileSync(path.join(agentsOut, 'index.html'), crew.template.before + crewRegion(crew) + crew.template.after);
   fs.writeFileSync(path.join(outDir, 'index.html'), crew.homeTemplate.before + crewGlyphs(crew) + crew.homeTemplate.after);
 
+  const patternsOut = path.join(outDir, 'patterns');
+  fs.rmSync(path.join(patternsOut, 'entries'), { recursive: true, force: true });
+  fs.rmSync(path.join(patternsOut, 'diagrams'), { recursive: true, force: true });
+  fs.rmSync(path.join(patternsOut, 'template.html'), { force: true });
+  fs.rmSync(path.join(patternsOut, 'catalog.json'), { force: true });
+  fs.writeFileSync(path.join(patternsOut, 'index.html'), patternsPage(patternsTemplate, patterns));
+
   console.log(`Blog build: ${posts.length} post(s) written to ${rel(path.join(outDir, 'blog'))}/`);
   console.log(`Agents page: ${plural(crew.agents, 'agent')}, ${plural(crew.skills, 'skill')} written to ${rel(agentsOut)}/`);
+  console.log(`Patterns page: ${patterns.tracks.map((t) => `${t.name} ${t.entries.length}`).join(', ')} written to ${rel(patternsOut)}/`);
 }
 
 main();
