@@ -6,7 +6,7 @@ order: 3
 summary: One model call writes a draft, a second call checks it against clear criteria and explains what's wrong, and the draft goes back for another pass until it passes.
 figure: The generator writes a draft, the evaluator scores it against a rubric, and failing drafts go back with feedback. The loop stops when a draft passes or the round limit is hit.
 caution: An evaluator that's too easy to please passes everything, and one with vague criteria makes the generator chase its own tail. Write the rubric down, test the evaluator on drafts you've already graded by hand, and always cap the number of rounds.
-related: [prompt-chaining, orchestrator-workers]
+related: [prompt-chaining, orchestrator-workers, retrieval-augmented-generation]
 ---
 
 ## Everyday comparison

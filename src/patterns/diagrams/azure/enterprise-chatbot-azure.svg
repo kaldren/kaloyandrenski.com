@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 440" role="img" aria-labelledby="enterprise-chatbot-azure-title">
+  <title id="enterprise-chatbot-azure-title">Enterprise chatbot on Azure: a user reaches the chat UI on App Service through Application Gateway; a Foundry agent in the virtual network grounds its answer in AI Search, calls a Foundry model and saves the conversation in Cosmos DB over private endpoints, while calls to public tools leave through Azure Firewall.</title>
+  <defs>
+    <marker id="enterprise-chatbot-azure-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="enterprise-chatbot-azure-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="zone"><rect x="116" y="10" width="574" height="420" rx="8"/><text class="zone-label" x="126" y="20">Azure subscription</text></g>
+  <g class="zone zone--inner"><rect x="130" y="40" width="424" height="310" rx="8"/><text class="zone-label" x="140" y="50">Virtual network</text></g>
+
+  <g class="node node--human"><rect x="14" y="188" width="84" height="44" rx="8"/><text class="node-label" x="56" y="210">User</text></g>
+  <g class="node node--tool"><rect x="10" y="278" width="96" height="44" rx="8"/><text class="node-label" x="58" y="300">Public tools</text></g>
+  <g class="node node--check"><rect x="144" y="180" width="104" height="60" rx="8"/><text class="node-label" x="196" y="201">App Gateway</text><text class="node-sub" x="196" y="221">WAF · TLS</text></g>
+  <g class="node node--io"><rect x="276" y="180" width="104" height="60" rx="8"/><text class="node-label" x="328" y="201">App Service</text><text class="node-sub" x="328" y="221">chat UI</text></g>
+  <g class="node node--agent"><rect x="408" y="170" width="124" height="80" rx="8"/><text class="node-label" x="470" y="200">Foundry Agent</text><text class="node-sub" x="470" y="222">ground · answer</text></g>
+  <g class="node node--check"><rect x="420" y="270" width="100" height="60" rx="8"/><text class="node-label" x="470" y="291">Firewall</text><text class="node-sub" x="470" y="311">egress rules</text></g>
+  <g class="node node--model"><rect x="574" y="60" width="104" height="60" rx="8"/><text class="node-label" x="626" y="81">Foundry</text><text class="node-sub" x="626" y="101">chat model</text></g>
+  <g class="node node--store"><rect x="574" y="186" width="104" height="48" rx="2"/><text class="node-label" x="626" y="201">AI Search</text><text class="node-sub" x="626" y="221">grounding index</text></g>
+  <g class="node node--store"><rect x="574" y="306" width="104" height="48" rx="2"/><text class="node-label" x="626" y="321">Cosmos DB</text><text class="node-sub" x="626" y="341">conversations</text></g>
+
+  <path class="edge edge--main" d="M98 210 H142" marker-end="url(#enterprise-chatbot-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M248 210 H274" marker-end="url(#enterprise-chatbot-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M380 210 H406" marker-end="url(#enterprise-chatbot-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M532 210 H572" marker-end="url(#enterprise-chatbot-azure-arrow-main)"/>
+  <path class="edge edge--main" d="M532 190 C553 190 553 90 572 90" marker-end="url(#enterprise-chatbot-azure-arrow-main)"/>
+  <path class="edge" d="M532 230 C553 230 553 330 572 330" marker-end="url(#enterprise-chatbot-azure-arrow)"/>
+  <path class="edge edge--optional" d="M470 250 V268" marker-end="url(#enterprise-chatbot-azure-arrow)"/>
+  <path class="edge edge--optional" d="M420 300 H108" marker-end="url(#enterprise-chatbot-azure-arrow)"/>
+
+  <text class="edge-label" x="270" y="290">public tool calls only</text>
+  <text class="edge-label" x="626" y="374">via private endpoints</text>
+</svg>

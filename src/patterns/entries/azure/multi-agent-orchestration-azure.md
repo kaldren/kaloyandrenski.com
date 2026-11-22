@@ -22,7 +22,7 @@ services:
   - name: Application Insights
     role: Traces each run across the orchestrator and its workers.
 implements: [orchestrator-workers]
-related: []
+related: [enterprise-chatbot-azure]
 ---
 
 ## Scenario

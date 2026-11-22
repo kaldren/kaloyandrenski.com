@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 230" role="img" aria-labelledby="retrieval-augmented-generation-title">
+  <title id="retrieval-augmented-generation-title">Retrieval-augmented generation: a question goes to a retriever that pulls passages from an index, a model answers from those passages, and a check releases the answer only if it is grounded, otherwise the system declines.</title>
+  <defs>
+    <marker id="retrieval-augmented-generation-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="retrieval-augmented-generation-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="node node--store"><rect x="140" y="10" width="120" height="40" rx="2"/><text class="node-label" x="200" y="30">Index</text></g>
+  <g class="node node--io"><rect x="14" y="80" width="92" height="60" rx="8"/><text class="node-label" x="60" y="101">Question</text><text class="node-sub" x="60" y="121">+ user rights</text></g>
+  <g class="node node--tool"><rect x="150" y="80" width="100" height="60" rx="8"/><text class="node-label" x="200" y="101">Retriever</text><text class="node-sub" x="200" y="121">search · filter</text></g>
+  <g class="node node--model"><rect x="294" y="80" width="100" height="60" rx="8"/><text class="node-label" x="344" y="101">Generator</text><text class="node-sub" x="344" y="121">answer · cite</text></g>
+  <g class="node node--check"><rect x="438" y="80" width="92" height="60" rx="8"/><text class="node-label" x="484" y="101">Check</text><text class="node-sub" x="484" y="121">grounded?</text></g>
+  <g class="node node--io"><rect x="574" y="80" width="92" height="60" rx="8"/><text class="node-label" x="620" y="101">Answer</text><text class="node-sub" x="620" y="121">with sources</text></g>
+  <g class="node node--io"><rect x="438" y="180" width="92" height="40" rx="8"/><text class="node-label" x="484" y="200">Decline</text></g>
+
+  <path class="edge edge--main" d="M106 110 H148" marker-end="url(#retrieval-augmented-generation-arrow-main)"/>
+  <path class="edge edge--main" d="M250 110 H292" marker-end="url(#retrieval-augmented-generation-arrow-main)"/>
+  <path class="edge edge--main" d="M394 110 H436" marker-end="url(#retrieval-augmented-generation-arrow-main)"/>
+  <path class="edge edge--main" d="M530 110 H572" marker-end="url(#retrieval-augmented-generation-arrow-main)"/>
+  <path class="edge" d="M200 50 V78" marker-end="url(#retrieval-augmented-generation-arrow)"/>
+  <path class="edge edge--optional" d="M484 140 V178" marker-end="url(#retrieval-augmented-generation-arrow)"/>
+
+  <text class="edge-label" x="290" y="66">top passages</text>
+  <text class="edge-label" x="551" y="96">pass</text>
+  <text class="edge-label" x="534" y="162">not grounded</text>
+</svg>

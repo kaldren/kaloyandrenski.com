@@ -6,7 +6,7 @@ order: 1
 summary: Split a task into a fixed sequence of model calls, where each step works on the output of the one before and plain code checks the result between steps.
 figure: Three model calls run in a fixed order. A code gate after the first step stops the chain before a bad outline turns into a bad draft.
 caution: Errors add up along a chain. A small mistake in step one becomes the input to every step after it, so put a cheap check after the steps that matter most and stop early instead of letting the chain polish a wrong answer.
-related: [orchestrator-workers, evaluator-optimizer]
+related: [orchestrator-workers, evaluator-optimizer, retrieval-augmented-generation]
 ---
 
 ## Everyday comparison
