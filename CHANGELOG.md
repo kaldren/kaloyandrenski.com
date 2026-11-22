@@ -4,6 +4,9 @@ All notable changes to kaloyandrenski.com are documented in this file. Entries a
 
 ## 2026-11-22
 
+### Changed
+- **Job title** — the homepage now shows the title as "Global AI Solutions Architect" with no employer name, in the hero, the About intro and the page's search description.
+
 ### Added
 - **Architecture Patterns page** — a new `/patterns/` field guide, linked from the main nav on every page and from the About section, collects architecture patterns for agentic AI on one page with a sticky contents list, category filters and search. Each numbered pattern has a diagram, an everyday comparison, notes on where it fits in an agent system and in a large company, steps, a short code sketch, a "Be careful" warning and links to related patterns, starting with Prompt Chaining, Orchestrator–Workers and Evaluator–Optimizer.
 - **Patterns page build** — adding a pattern is now just adding its markdown file and diagram. The deploy builds the page automatically and stops if a pattern uses a category that isn't on the fixed list, is missing one of the six sections or has them out of order, lacks its diagram, has a diagram that hardcodes its own colors, shares a position with another pattern, or has a "related" link to a pattern that doesn't exist.
