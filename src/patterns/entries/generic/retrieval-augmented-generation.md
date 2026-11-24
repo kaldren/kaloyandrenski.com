@@ -6,7 +6,7 @@ order: 4
 summary: Before the model answers, code searches your own documents for the passages that matter and puts them in the prompt, so the answer rests on your data instead of the model's memory.
 figure: The question goes to a retriever, which pulls the best passages from an index. The model answers from those passages, and a check sends the answer out only if it is grounded in them.
 caution: Most bad answers are bad retrieval, not a bad model. If the right passage never reaches the prompt, the model fills the gap with something plausible, so test retrieval on its own with real questions, and let the system say it doesn't know when nothing relevant comes back.
-related: [evaluator-optimizer, prompt-chaining]
+related: [prompt-chaining, reflection]
 ---
 
 ## Everyday comparison
