@@ -12,13 +12,25 @@ Coding agents have made writing code cheap. The bottleneck has moved to everythi
 
 ## The three parts of Claude Ship
 
-Claude Ship is three agents, each owning one step of the pull request.
+Claude Ship is three agents, each owning one step of the pull request: review, fix and approve.
+
+![Claude Ship's review, fix and approve loop: Code Review posts two findings on a pull request, PR Steward pushes fixes, Code Review finds one more, PR Steward fixes it, the next review finds no issues, and Claude Approvals approves the pull request under the team policy, marking it ready to merge](/public/blog/claude-ship-overview.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
 
 **Code Review finds and verifies bugs.** It reviews the pull request against the whole codebase from several angles, then adversarially verifies its own findings before posting them, so you get fewer false alarms. You pick a Quick, Standard or Deep review level per repository. This part was already [generally available](https://claude.com/resources/articles/code-review-is-now-generally-available).
 
+![Example of Code Review posting its findings as comments on a GitHub pull request](/public/blog/claude-ship-code-review.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
+
 **PR Steward keeps the pull request green.** It works through failing CI checks, merge conflicts, and feedback from Code Review, other review tools or teammates. After every push it comments with what it changed and how to undo it. You steer it with an `@claude` comment, or tell it to back off with `@claude stop`. It is deliberately designed never to approve or merge.
 
+![Example of PR Steward working through fixes on a GitHub pull request and commenting on what it changed](/public/blog/claude-ship-pr-steward.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
+
 **Claude Approvals applies your team's approval rules.** The team writes an approval policy as a file in the repository. Claude can approve routine changes on its own where the policy allows, and require a human to sign off on everything else. Anthropic describes it as "a smarter CODEOWNERS file": instead of only matching file paths, a policy can use Code Review findings or your own natural-language classifiers to decide what counts as routine.
+
+The example policy in Anthropic's announcement shows the idea well. Docs changes need no human once Claude's review passes. Most code needs one person instead of two when the review passes. Billing code always needs two people who didn't write the change, one of them from the payments team.
+
+![Example Claude Approvals policy file, .claude/approvals.yml, with three rules: most code needs two people or one when Claude's review passes, docs are approved by Claude when its review passes, and billing needs two non-author reviewers including one from payments](/public/blog/claude-ship-approvals-policy.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
+
+![Example of a GitHub pull request that met its Claude Approvals policy](/public/blog/claude-ship-approvals-passed.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
 
 Your existing branch protection and required checks stay in place. Claude Ship sits in front of your delivery pipeline, it doesn't replace it.
 
@@ -28,6 +40,8 @@ There are two ways in:
 
 - **Per developer**, with the new `/ship` command in Claude Code. Claude pushes your change, opens the pull request, reviews it, and works on feedback and failing checks.
 - **Per repository**, where an admin turns it on and it runs on every pull request, without anyone typing `/ship`. The admin picks the review level, when reviews run and a monthly spend limit.
+
+![Example of running the /ship command in Claude Code](/public/blog/claude-ship-ship-command.png "Source: Anthropic, “Introducing Claude Ship”, claude.com")
 
 It's in beta on the Claude Team and Enterprise plans, for repositories on GitHub. Code Review is generally available; PR Steward and Claude Approvals are the beta parts. Billing is by tokens, so cost grows with the number and size of pull requests, the review level and how much fixing PR Steward does. It isn't available to organisations using Zero Data Retention, the HIPAA configuration or customer-managed encryption keys. The [Claude Ship docs](https://code.claude.com/docs/en/claude-ship) cover the setup.
 
