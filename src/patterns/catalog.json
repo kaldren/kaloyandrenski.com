@@ -1,8 +1,8 @@
 [
   {
     "id": "generic",
-    "name": "Architecture patterns",
-    "group": "Generic",
+    "name": "AI Architecture",
+    "group": "Agentic AI",
     "prefix": "",
     "format": "pattern",
     "description": "Vendor-neutral patterns for agentic AI. They describe the idea, so they work on any cloud and any framework.",
@@ -34,6 +34,20 @@
       {
         "name": "Evaluation",
         "description": "Knowing whether the system works: eval sets, LLM-as-judge, regression testing, tracing and production monitoring."
+      }
+    ]
+  },
+  {
+    "id": "software",
+    "name": "Software Architecture",
+    "group": "App Development",
+    "prefix": "SA",
+    "format": "pattern",
+    "description": "Vendor-neutral patterns for structuring the code behind an application, agentic or not: how features, modules and shared code are organised.",
+    "categories": [
+      {
+        "name": "Application Structure",
+        "description": "How the code is organised into modules, layers and feature slices, and where shared code lives."
       }
     ]
   },

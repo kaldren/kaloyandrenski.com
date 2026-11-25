@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 270" role="img" aria-labelledby="vertical-slice-architecture-title">
+  <title id="vertical-slice-architecture-title">Vertical Slice Architecture: two feature folders, add_task and complete_task, each hold their own endpoint, request schema and handler, and a request runs through only its own slice before both slices write to a shared task store.</title>
+  <defs>
+    <marker id="vertical-slice-architecture-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="vertical-slice-architecture-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="zone"><rect x="14" y="10" width="516" height="110" rx="8"/><text class="zone-label" x="24" y="20">features/add_task/</text></g>
+  <g class="zone"><rect x="14" y="150" width="516" height="110" rx="8"/><text class="zone-label" x="24" y="160">features/complete_task/</text></g>
+
+  <g class="node node--io"><rect x="34" y="50" width="140" height="60" rx="8"/><text class="node-label" x="104" y="71">Endpoint</text><text class="node-sub" x="104" y="91">POST /tasks</text></g>
+  <g class="node node--check"><rect x="202" y="50" width="140" height="60" rx="8"/><text class="node-label" x="272" y="71">Schema</text><text class="node-sub" x="272" y="91">name not blank</text></g>
+  <g class="node node--tool"><rect x="370" y="50" width="140" height="60" rx="8"/><text class="node-label" x="440" y="71">Handler</text><text class="node-sub" x="440" y="91">save the task</text></g>
+
+  <g class="node node--io"><rect x="34" y="190" width="140" height="60" rx="8"/><text class="node-label" x="104" y="211">Endpoint</text><text class="node-sub" x="104" y="231">PATCH /tasks/{id}</text></g>
+  <g class="node node--check"><rect x="202" y="190" width="140" height="60" rx="8"/><text class="node-label" x="272" y="211">Schema</text><text class="node-sub" x="272" y="231">completed = true</text></g>
+  <g class="node node--tool"><rect x="370" y="190" width="140" height="60" rx="8"/><text class="node-label" x="440" y="211">Handler</text><text class="node-sub" x="440" y="231">mark complete</text></g>
+
+  <g class="node node--store"><rect x="574" y="105" width="112" height="60" rx="2"/><text class="node-label" x="630" y="126">Tasks</text><text class="node-sub" x="630" y="146">shared store</text></g>
+
+  <path class="edge edge--main" d="M174 80 H200" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+  <path class="edge edge--main" d="M342 80 H368" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+  <path class="edge edge--main" d="M510 80 C542 80 540 125 572 125" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+  <path class="edge edge--main" d="M174 220 H200" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+  <path class="edge edge--main" d="M342 220 H368" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+  <path class="edge edge--main" d="M510 220 C542 220 540 145 572 145" marker-end="url(#vertical-slice-architecture-arrow-main)"/>
+</svg>

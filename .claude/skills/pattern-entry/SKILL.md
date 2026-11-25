@@ -11,9 +11,9 @@ You are adding or revising an entry on the `/patterns/` page of kaloyandrenski.c
 Read these before writing anything:
 
 - `AGENTS.md`, for the site's rules.
-- `src/patterns/catalog.json`, the tracks (generic patterns, then one per cloud), each with its `format`, number `prefix` and allowed `categories`.
+- `src/patterns/catalog.json`, the tracks (the generic AI and software architecture tracks, then one per cloud), each with its `format`, number `prefix` and allowed `categories`.
 - The format for the track you're writing in:
-  - generic track (`"format": "pattern"`): [reference/entry-format.md](reference/entry-format.md)
+  - generic tracks (`"format": "pattern"`): [reference/entry-format.md](reference/entry-format.md)
   - cloud track (`"format": "cloud"`): [reference/cloud-format.md](reference/cloud-format.md)
 - [reference/diagram-spec.md](reference/diagram-spec.md), the diagram language shared by every track, plus the cloud additions.
 - The "Pattern diagrams" section of `DESIGN_SYSTEM.md`.
@@ -24,7 +24,7 @@ Read these before writing anything:
 Use the skill argument. If it names an existing entry, you are revising. Keep its slug, track and `order`, because other pages may link to `/patterns/#<slug>`. Then skip to step 4.
 
 For a new entry:
-- **Track:** an idea that works on any platform belongs in the generic track. A design built from one provider's real services belongs in that provider's track.
+- **Track:** an idea that works on any platform belongs in a generic track: patterns for agentic AI in the AI Architecture track (`generic`), patterns for structuring application code, such as layers, modules and feature slices, in the Software Architecture track (`software`). A design built from one provider's real services belongs in that provider's track.
   - If the user names a cloud that has no track yet (say Google Cloud), stop and follow "Adding a cloud track" below. Never add a track on your own.
   - If the track is ambiguous, ask.
 - **Duplicates:** check the entry isn't already covered under another name. Compare it against every `title` and `aliases` in the track. If it's a variant, propose an alias or a revision instead, and ask.

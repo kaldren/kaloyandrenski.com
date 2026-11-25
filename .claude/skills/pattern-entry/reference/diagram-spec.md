@@ -57,7 +57,7 @@ Markup, with a two-line node centred on `(cx, cy)`:
 - **Labels:** `node-label` is short Title Case, at most about 14 characters. `node-sub` is lowercase, at most about 18 characters; separate two verbs with ` · ` ("plan · delegate"). The text is centred by CSS, so don't add `text-anchor` or font attributes.
 - **Size limit:** 3–9 nodes. If you need more, the diagram is doing too much.
 
-## Boundaries (cloud diagrams)
+## Boundaries (cloud diagrams, code modules)
 
 A boundary groups nodes that live together: a subscription, project or account, a virtual network, or a hosting environment like Container Apps or Kubernetes.
 

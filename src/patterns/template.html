@@ -6,8 +6,8 @@
   Contract:
   - All asset and nav links are root-absolute (/public/..., /#about, /blog/), because
     the page is served from /patterns/.
-  - The page is organised in tracks (patterns/catalog.json): the generic patterns and
-    one track per cloud. Tracks and their categories appear in catalog order; empty
+  - The page is organised in tracks (patterns/catalog.json): the generic tracks (AI and
+    software architecture), then one track per cloud. Tracks and their categories appear in catalog order; empty
     ones are left out. Entries are numbered per track ("01", or "AZ-01" with a prefix).
   - Three region markers, in this order. Everything from BUILD:x to /BUILD:x (markers
     included) is replaced; the sample markup inside is the exact shape the build emits
@@ -99,7 +99,7 @@
               <input class="patterns-filter__search" id="pattern-search" type="search" autocomplete="off" placeholder="e.g. loop, delegate, AI Search">
               <div class="patterns-filter__chips" role="group" aria-label="Filter by track">
                 <button type="button" class="pattern-chip" data-track="all" aria-pressed="true">All</button>
-                <button type="button" class="pattern-chip" data-track="generic" aria-pressed="false">Architecture patterns</button>
+                <button type="button" class="pattern-chip" data-track="generic" aria-pressed="false">AI Architecture</button>
               </div>
               <div class="patterns-filter__chips" role="group" aria-label="Filter by category">
                 <button type="button" class="pattern-chip" data-category="all" aria-pressed="true">All categories</button>
@@ -108,7 +108,7 @@
             </div>
             <ol class="patterns-toc__tracks">
               <li class="patterns-toc__track" data-track="generic">
-                <a class="patterns-toc__track-link" href="#track-generic"><span class="patterns-toc__group-label">Generic</span>Architecture patterns</a>
+                <a class="patterns-toc__track-link" href="#track-generic"><span class="patterns-toc__group-label">Agentic AI</span>AI Architecture</a>
                 <ol class="patterns-toc__groups">
                   <li class="patterns-toc__group" data-category="generic/orchestration">
                     <p class="patterns-toc__heading">Orchestration</p>
@@ -187,7 +187,7 @@
             <li><span class="pattern-legend__swatch pattern-legend__swatch--check" aria-hidden="true"></span>Check, gate or policy</li>
             <li><span class="pattern-legend__swatch pattern-legend__swatch--human" aria-hidden="true"></span>Person</li>
             <li><span class="pattern-legend__swatch pattern-legend__swatch--io" aria-hidden="true"></span>Input or output</li>
-            <li><span class="pattern-legend__swatch pattern-legend__swatch--zone" aria-hidden="true"></span>Boundary (cloud)</li>
+            <li><span class="pattern-legend__swatch pattern-legend__swatch--zone" aria-hidden="true"></span>Boundary (cloud or code module)</li>
             <li><span class="pattern-legend__line pattern-legend__line--main" aria-hidden="true"></span>Main path</li>
             <li><span class="pattern-legend__line" aria-hidden="true"></span>Other flow</li>
             <li><span class="pattern-legend__line pattern-legend__line--optional" aria-hidden="true"></span>Optional or on failure</li>
@@ -199,7 +199,7 @@
         <!-- BUILD:patterns-entries -->
         <section class="patterns-track" id="track-sample" data-track="generic" aria-labelledby="track-sample-heading">
           <header class="patterns-track__header">
-            <p class="patterns-track__group">Generic</p>
+            <p class="patterns-track__group">Agentic AI</p>
             <h2 class="patterns-track__title" id="track-sample-heading">Architecture patterns</h2>
             <p class="patterns-track__description">The build replaces this sample with the real tracks and entries.</p>
             <p class="patterns-track__count">1 entry · Orchestration</p>

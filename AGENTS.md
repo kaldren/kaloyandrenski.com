@@ -8,7 +8,7 @@ kaloyandrenski.com is a personal website that serves as a professional portfolio
 
 The goal is to build a minimal, fast, and content-focused website that showcases his professional profile, expertise, certifications, and technical writing.
 
-The website is a single-page experience, with dedicated pages only for blog posts, a single `/agents/` page showcasing the AI agents that build the site, and a single `/patterns/` page: a field guide to architecture patterns for agentic AI, with generic patterns plus cloud-specific architectures (Microsoft Azure today) built from real services.
+The website is a single-page experience, with dedicated pages only for blog posts, a single `/agents/` page showcasing the AI agents that build the site, and a single `/patterns/` page: a field guide to architecture patterns for agentic AI, with generic patterns (AI architecture and software architecture) plus cloud-specific architectures (Microsoft Azure today) built from real services.
 
 ## Project Structure
 
@@ -41,7 +41,7 @@ kaloyandrenski.com/
 ### Tooling & build process
 
 - npm dev dependencies (in the root `package.json`, pinned by `package-lock.json`) and a blog build script are allowed when they make things easier. No bundler, and nothing compiled or transformed except the blog build.
-- The blog build (`scripts/build-blog.mjs`, run with `npm run build:blog`) copies `src/` into the gitignored `_site/` and generates the blog post pages and blog index from `src/blog/`. It also generates the `/agents/` page from `src/agents/` and the agent/skill definitions in `.claude/`, and the `/patterns/` page from `src/patterns/`. That page is organised in tracks listed in `catalog.json`: the generic patterns, then one track per cloud. Each entry is one markdown file plus one class-only SVG diagram, in the track's folder. The build fails on an unknown track or category, missing or reordered sections, bad cloud `services` or `implements`, a missing or non-conforming diagram, a duplicate `order` or a broken link. CI publishes `_site/`; generated HTML is never committed.
+- The blog build (`scripts/build-blog.mjs`, run with `npm run build:blog`) copies `src/` into the gitignored `_site/` and generates the blog post pages and blog index from `src/blog/`. It also generates the `/agents/` page from `src/agents/` and the agent/skill definitions in `.claude/`, and the `/patterns/` page from `src/patterns/`. That page is organised in tracks listed in `catalog.json`: two generic tracks (AI architecture, software architecture), then one track per cloud. Each entry is one markdown file plus one class-only SVG diagram, in the track's folder. The build fails on an unknown track or category, missing or reordered sections, bad cloud `services` or `implements`, a missing or non-conforming diagram, a duplicate `order` or a broken link. CI publishes `_site/`; generated HTML is never committed.
 - The site's runtime stays plain HTML/CSS/vanilla JS with no frameworks. Avoid shipping JS libraries to the browser unless there's a clear reason.
 - All other files are authored directly and served as-is.
 - Local preview: open the HTML files directly in a browser, or use any simple static file server. Run `npm install` then `npm run build:blog` to preview generated blog pages in `_site/`.
