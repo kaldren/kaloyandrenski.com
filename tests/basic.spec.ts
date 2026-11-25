@@ -24,7 +24,7 @@ test('test', async ({ page }) => {
   await page
     .getByRole('link', {
       name: 'View certification details',
-      description: 'Frontier Transformation Engineer',
+      description: 'Microsoft Frontier Transformation Engineer',
     })
     .click();
   const page4 = await page4Promise;
