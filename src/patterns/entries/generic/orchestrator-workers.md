@@ -6,7 +6,7 @@ order: 2
 summary: A lead agent breaks a task into sub-tasks at run time, hands each one to a worker with its own focused context, and combines what comes back.
 figure: The orchestrator plans and delegates to three workers, then synthesizes their results into one answer. When the results leave gaps, it plans another round.
 caution: Workers only know what the orchestrator tells them. A vague hand-off like "look into the auth code" gets you three workers doing overlapping work, or none doing the part that mattered, so every sub-task needs a goal, its boundaries and the shape of the answer you want back.
-related: [prompt-chaining, evaluator-optimizer]
+related: [prompt-chaining, evaluator-optimizer, ai-sdlc]
 ---
 
 ## Everyday comparison
