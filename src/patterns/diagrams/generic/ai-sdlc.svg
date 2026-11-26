@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 340" role="img" aria-labelledby="ai-sdlc-title">
+  <title id="ai-sdlc-title">AI-SDLC: a spec agent turns an intent into a spec that the owner accepts, a build agent plans, codes and tests once an engineer accepts its plan, a review agent checks the pull request and sends changes back, a code owner approves the merge, and a named person authorizes the release at the production gate; every stage commits its artifact to the repository, and when a production monitor detects a breach, an ops agent diagnoses it and writes it up as a new intent, closing the loop.</title>
+  <defs>
+    <marker id="ai-sdlc-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 L10 5 L0 10 Z"/></marker>
+    <marker id="ai-sdlc-arrow-main" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse"><path class="arrowhead arrowhead--main" d="M0 0 L10 5 L0 10 Z"/></marker>
+  </defs>
+
+  <g class="node node--store"><rect x="142" y="14" width="406" height="40" rx="2"/><text class="node-label" x="345" y="34">Repository</text></g>
+  <g class="node node--io"><rect x="14" y="110" width="100" height="60" rx="8"/><text class="node-label" x="64" y="131">Intent</text><text class="node-sub" x="64" y="151">idea · ticket</text></g>
+  <g class="node node--agent"><rect x="142" y="110" width="110" height="60" rx="8"/><text class="node-label" x="197" y="131">Spec agent</text><text class="node-sub" x="197" y="151">intent → spec</text></g>
+  <g class="node node--agent"><rect x="280" y="100" width="120" height="80" rx="8"/><text class="node-label" x="340" y="130">Build agent</text><text class="node-sub" x="340" y="152">plan · code · test</text></g>
+  <g class="node node--agent"><rect x="428" y="110" width="120" height="60" rx="8"/><text class="node-label" x="488" y="131">Review agent</text><text class="node-sub" x="488" y="151">reviews the PR</text></g>
+  <g class="node node--human"><rect x="576" y="110" width="100" height="60" rx="8"/><text class="node-label" x="626" y="131">Code owner</text><text class="node-sub" x="626" y="151">approves</text></g>
+  <g class="node node--human"><rect x="142" y="215" width="110" height="60" rx="8"/><text class="node-label" x="197" y="236">Owner</text><text class="node-sub" x="197" y="256">accepts spec</text></g>
+  <g class="node node--human"><rect x="280" y="215" width="120" height="60" rx="8"/><text class="node-label" x="340" y="236">Engineer</text><text class="node-sub" x="340" y="256">accepts plan</text></g>
+  <g class="node node--agent"><rect x="428" y="215" width="120" height="60" rx="8"/><text class="node-label" x="488" y="236">Ops agent</text><text class="node-sub" x="488" y="256">diagnose · intent</text></g>
+  <g class="node node--io"><rect x="576" y="215" width="100" height="60" rx="8"/><text class="node-label" x="626" y="236">Production</text><text class="node-sub" x="626" y="256">release gate</text></g>
+
+  <path class="edge edge--main" d="M114 140 H140" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M252 140 H278" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M400 140 H426" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M548 140 H574" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M626 170 V213" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M576 245 H550" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge edge--main" d="M488 275 V300 H64 V172" marker-end="url(#ai-sdlc-arrow-main)"/>
+  <path class="edge" d="M197 110 V56" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge" d="M340 100 V56" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge" d="M488 110 V56" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge" d="M626 110 V34 H550" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge" d="M197 215 V172" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge" d="M340 215 V182" marker-end="url(#ai-sdlc-arrow)"/>
+  <path class="edge edge--optional" d="M488 170 V196 H372 V182" marker-end="url(#ai-sdlc-arrow)"/>
+
+  <text class="edge-label" x="250" y="82">intent · spec</text>
+  <text class="edge-label" x="380" y="82">plan · PR</text>
+  <text class="edge-label" x="524" y="82">findings</text>
+  <text class="edge-label" x="588" y="26">merge</text>
+  <text class="edge-label" x="655" y="196">release</text>
+  <text class="edge-label" x="429" y="189">changes</text>
+  <text class="edge-label" x="562" y="207">breach</text>
+  <text class="edge-label" x="276" y="320">new intent: people triage it, and the loop starts again</text>
+</svg>

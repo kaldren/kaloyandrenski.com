@@ -6,7 +6,7 @@ order: 5
 summary: After a failed attempt, the agent works out what went wrong, writes itself a short lesson, and tries again with that lesson in hand, so each attempt learns from the last.
 figure: The actor attempts the task and an evaluator checks the result with tests or tools. A failed attempt goes to the reflector, which writes a short lesson into memory, and the actor reads it on the next try. The loop stops when an attempt passes or the attempt limit is hit.
 caution: A model that checks its own work tends to decide it is fine, so reflection with no outside signal often changes nothing or makes the answer worse. Ground every critique in something the model can't argue with, such as a test run, a search result or a policy check, and always cap the number of attempts.
-related: [evaluator-optimizer, retrieval-augmented-generation]
+related: [evaluator-optimizer, retrieval-augmented-generation, ai-sdlc]
 ---
 
 ## Everyday comparison

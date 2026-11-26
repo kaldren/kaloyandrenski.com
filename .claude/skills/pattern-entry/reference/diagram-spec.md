@@ -55,7 +55,7 @@ Markup, with a two-line node centred on `(cx, cy)`:
   - A one-line node is 36–44 high, with the label at `cy`.
 - **Corners:** `rx="8"` on every node except `node--store`, which uses `rx="2"`.
 - **Labels:** `node-label` is short Title Case, at most about 14 characters. `node-sub` is lowercase, at most about 18 characters; separate two verbs with ` · ` ("plan · delegate"). The text is centred by CSS, so don't add `text-anchor` or font attributes.
-- **Size limit:** 3–9 nodes. If you need more, the diagram is doing too much.
+- **Size:** aim for 3–9 nodes. This is a guideline, not a hard rule, and the build doesn't check it. Go past 9 only when every node is a distinct role the reader needs to see; otherwise the diagram is doing too much.
 
 ## Boundaries (cloud diagrams, code modules)
 
