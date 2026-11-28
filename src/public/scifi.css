@@ -1,9 +1,18 @@
 /* ==========================================================================
    Sci-fi homepage theme (experimental)
    Loaded on the homepage only, after styles.css, and scoped to
-   body.theme-scifi. Tokens only, no hex values; the sci-fi tokens live in
-   styles.css and are documented in DESIGN_SYSTEM.md, "Sci-fi homepage".
+   body.theme-scifi. Tokens only: the four sci-fi tokens below are the only
+   hex values, documented in DESIGN_SYSTEM.md, "Sci-fi homepage". They live
+   here rather than in styles.css so a stale cached styles.css can never
+   leave the dark theme without its colors.
    ========================================================================== */
+
+:root {
+  --color-void: #020814;
+  --color-void-panel: #061226;
+  --color-neon-blue: #3D7BFF;
+  --color-neon-violet: #A46BFF;
+}
 
 body.theme-scifi {
   background-color: var(--color-void);

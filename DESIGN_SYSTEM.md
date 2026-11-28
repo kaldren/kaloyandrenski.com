@@ -122,7 +122,7 @@ Each entry on the `/patterns/` page has a hand-written inline SVG diagram. Diagr
 
 The homepage is a dark "agentic grid" surface, styled by `public/scifi.css` (loaded only on the homepage and scoped to `body.theme-scifi`). It is an **explicit, page-scoped exception** to the light surface, the single-shadow rule and the motion rule. The blog, `/agents/` and `/patterns/` pages are unaffected.
 
-- **Tokens:** four additions, used only by `scifi.css`.
+- **Tokens:** four additions, used only by `scifi.css` and defined at its top (not in `styles.css`), so a stale cached `styles.css` can't leave the theme without its colors. The homepage links its stylesheets and `scifi.js` with a `?v=` version; bump it whenever those files change.
 
   | Role | Hex | Custom property |
   |---|---|---|
@@ -168,8 +168,10 @@ Define these once (e.g. in a root stylesheet) and reference them everywhere — 
   --color-syntax-comment: #7E909D;
   --color-syntax-function: #3CC2DE;
   --color-syntax-type: #9FE0C8;
+}
 
-  /* sci-fi homepage (scifi.css only) */
+/* sci-fi homepage: defined at the top of scifi.css */
+:root {
   --color-void: #020814;
   --color-void-panel: #061226;
   --color-neon-blue: #3D7BFF;
