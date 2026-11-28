@@ -8,6 +8,7 @@ All notable changes to kaloyandrenski.com are documented in this file. Entries a
 - **Intro video** — opening the homepage now shows a short intro video first, held on its first frame behind an "Initialize" play button. One click plays it with sound, and it fades into the site when it ends. "Skip intro" and Esc are always there, and it doesn't replay when visitors come back to the homepage from another page of the site.
 
 ### Changed
+- **Job title** — the homepage now shows the title as "Global Lead AI Solutions Architect", in the hero, the About intro and the page's search description.
 - **Sci-fi homepage** — the homepage is now a dark "agentic grid": glowing circuit traces with light pulses passing between nodes like agents handing off work, a faint digital rain, scanlines, and neon-edged cards. The hero boots up with a typed `agent://` command line, a framed portrait with a scan line and a briefly glitching name. Visitors who ask for reduced motion get a still version.
 
 ## 2026-11-22
