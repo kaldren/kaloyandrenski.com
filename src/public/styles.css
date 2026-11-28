@@ -29,6 +29,12 @@
   --color-syntax-function: #3CC2DE;
   --color-syntax-type: #9FE0C8;
 
+  /* sci-fi homepage (experimental, used by scifi.css) */
+  --color-void: #020814;
+  --color-void-panel: #061226;
+  --color-neon-blue: #3D7BFF;
+  --color-neon-violet: #A46BFF;
+
   /* type */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;

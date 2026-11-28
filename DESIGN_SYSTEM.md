@@ -118,6 +118,25 @@ Each entry on the `/patterns/` page has a hand-written inline SVG diagram. Diagr
 - **Cloud entries** add a provider tag (`--color-primary` fill, `--color-text-on-dark` text, 13.11:1) before the category tag. Their services table reuses the blog table style, with service names as `--color-primary` row headers.
 - **Rest of the page:** category and related-pattern chips are tags (`--radius-sm`, `--font-mono`, `--text-xs`). The "Be careful" callout is `--color-bg-subtle` with a 4px `--color-accent-warm` left border and a `--color-primary` heading. The hero is a dark section like the homepage hero.
 
+### Sci-fi homepage (homepage only, experimental)
+
+The homepage is a dark "agentic grid" surface, styled by `public/scifi.css` (loaded only on the homepage and scoped to `body.theme-scifi`). It is an **explicit, page-scoped exception** to the light surface, the single-shadow rule and the motion rule. The blog, `/agents/` and `/patterns/` pages are unaffected.
+
+- **Tokens:** four additions, used only by `scifi.css`.
+
+  | Role | Hex | Custom property |
+  |---|---|---|
+  | Page background | `#020814` | `--color-void` |
+  | Panel surface (cards, frames) | `#061226` | `--color-void-panel` |
+  | Neon accent (borders, traces, glow) | `#3D7BFF` | `--color-neon-blue` |
+  | Neon accent (glow, glitch, rules) | `#A46BFF` | `--color-neon-violet` |
+
+  The code and syntax tokens are reused as accents: `--color-syntax-function` (cyan) for links, labels and focus, and `--color-syntax-type` (mint) for the digital rain and status line. Translucent variants are made with `color-mix()` on these tokens, never new hex values.
+- **Contrast:** body text is `--color-code-text` (about 16:1 on `--color-void-panel`), lead text `--color-secondary`, secondary text `--color-syntax-comment` (above 5:1) and links `--color-syntax-function` (above 8:1). Neon blue and violet are for borders, glows and large text, not small body text. The amber CTA is unchanged.
+- **Background:** one fixed canvas (`.matrix-bg`, `public/scifi.js`) draws circuit traces, light pulses travelling between nodes and a faint digital rain at 30fps. It pauses when the tab is hidden. A CSS veil adds scanlines, a faint grid and a darker centre so text stays readable.
+- **Intro:** a full-screen overlay holds the intro video on its poster frame behind a round play button, the only fully round control on the site. A click plays it with sound, and it fades into the page when it ends. The overlay always has "Skip intro" and Esc. It plays when the homepage is opened directly and is skipped when arriving from another page of the site, with `?nointro`, or under reduced motion.
+- **Sanctioned motion (this page only):** the hero boot-in, the typing line and caret, the name glitch, the portrait scan line, the status pulse, the play-button ring and the canvas animation. Glows may use `box-shadow`/`text-shadow` in the neon tokens. Under `prefers-reduced-motion: reduce` all CSS animation is off, the canvas draws a single still frame and the intro does not play.
+
 ### CSS custom properties
 
 Define these once (e.g. in a root stylesheet) and reference them everywhere — no hardcoded hex values in component CSS.
@@ -149,6 +168,12 @@ Define these once (e.g. in a root stylesheet) and reference them everywhere — 
   --color-syntax-comment: #7E909D;
   --color-syntax-function: #3CC2DE;
   --color-syntax-type: #9FE0C8;
+
+  /* sci-fi homepage (scifi.css only) */
+  --color-void: #020814;
+  --color-void-panel: #061226;
+  --color-neon-blue: #3D7BFF;
+  --color-neon-violet: #A46BFF;
 }
 ```
 

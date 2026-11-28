@@ -2,9 +2,10 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { test } from '@playwright/test';
 
-const homePageUrl = pathToFileURL(
+// ?nointro skips the homepage intro video so it doesn't cover the links under test.
+const homePageUrl = `${pathToFileURL(
   path.resolve(__dirname, '../src/index.html'),
-).toString();
+).toString()}?nointro`;
 
 test('test', async ({ page }) => {
   await page.goto(homePageUrl);
